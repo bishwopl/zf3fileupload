@@ -1,0 +1,102 @@
+<?php
+    $formatter = new \Zf3FileUpload\SizeFormatter\SizeFormatter();
+    
+    if($this->errors!==NULL){
+        echo 'Upload Unsuccessful. Reason(s)<ol>';
+        foreach($this->errors as $key=>$e){
+            foreach($e as $message){
+                echo '<li>'.$message.'</li>';
+            }
+        }
+        echo '</ol>';
+        echo''
+        . '<script type="text/javascript">'
+            . '$(document).ready(function(){'
+                . '$("#'.$this->buttonId.'").html(\''
+                . '<span class="'.$this->buttonErrorIcon.'"></span> '
+                . $this->buttonErrorText
+                . '\');'
+            . '});'
+        . '</script>'
+        . '';
+    }
+    else{
+        $imgs = '';
+        $fileNames = '';
+        if($this->isImage==true&&$this->showPreview==true){
+            $previewWidth  = $this->previewDim['width'];
+            $previewHeight = $this->previewDim['height'];
+            foreach($this->files as $f){
+                $content = $f->getContent();
+                if(!is_string($content)){
+                    $content = stream_get_contents($content);
+                }
+                $imgs .= '<img src=\'data:image/png;base64,'.base64_encode($content).'\' '
+                        . ' height=\"'.$previewHeight.'\" width=\"'.$previewWidth.'\"/>';
+                $fileNames[] = $f->getFileId();
+            }
+            
+        }
+        echo''
+            . '<script type="text/javascript">'
+                . '$(document).ready(function(){'
+                    . '$("#'.$this->previewDiv.'").html("'.$imgs.'");'
+                . '});'
+            . '</script>'
+            . '';
+        
+        echo''
+        . '<script type="text/javascript">'
+            . '$(document).ready(function(){'
+                . '$("#'.$this->inputId.'").val(\''.implode(',',$fileNames).'\')'
+            . '});'
+        . '</script>'
+        . '';
+        echo''
+            . '<script type="text/javascript">'
+                . '$(document).ready(function(){'
+                    . '$("#'.$this->buttonId.'").html(\''
+                    . '<span class="'.$this->buttonSuccessIcon.'"></span> '
+                    . $this->buttonSuccessText
+                    . '\');'
+                . '});'
+            . '</script>'
+            . '';
+        
+        $download = '<table style=\"text-align:center;\" '
+                . 'class=\"table table-hover table-responsive table-stripped table-bordered\">';  
+        foreach($this->files as $f){
+            $downloadLink = '<a title=\"Get Attachment\" href=\"'
+                . $this->url('fileUpload/getUpload' , array('uploadname' => $this->uploadName,'filename'=>$f->getFileId())).'\" '
+                . 'target=\"_blank\">'
+                . '<span class=\"glyphicon glyphicon-download-alt\"></span></a>';
+            
+            $removeLink = '<span style=\"color: #bb0000; cursor: pointer;\" title=\"Remove Attachment\" '
+                . 'class=\"glyphicon glyphicon-trash\" '
+                . 'onclick=\"removeUpload(\''.$this->uploadName.'\',\''.basename($f->getFileId()).'\',\''.$this->downloadDiv.'\')\">'
+                . '</span>';
+            $download .= '<tr>';
+                $download .= '<td><span style=\"color: #00bb00; cursor: pointer;\" '
+                    . 'title=\"Upload Successful\" '
+                    . 'class=\"glyphicon glyphicon-ok\"'
+                    . '</span></td>';
+                $download .= '<td><small>'. $formatter->resizeName(basename($f->getName())).'</small></td>';
+                $download .= '<td><small>'.$formatter->sizeFormat($f->getSize()).'</small></td>';
+                $download .= '<td>'.$downloadLink.'</td>';
+                if($this->enableRemove){
+                    $download .= '<td>'.$removeLink.'</td>';
+                }
+            $download .= '</tr>';
+        }
+        $download .= '</table>';
+        
+        echo''
+        . '<script type="text/javascript">'
+            . '$(document).ready(function(){'
+                . '$("#'.$this->downloadDiv.'").html("'.$download.'");'
+            . '});'
+        . '</script>'
+        . '';
+
+    }
+    

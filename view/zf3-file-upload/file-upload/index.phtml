@@ -1,0 +1,126 @@
+<?php
+    if($this->errors!==NULL){
+        echo 'Upload Unsuccessful. Reason(s)<ol>';
+        foreach($this->errors as $key=>$e){
+            foreach($e as $message){
+                echo '<li>'.$message.'</li>';
+            }
+        }
+        echo '</ol>';
+        echo''
+        . '<script type="text/javascript">'
+            . '$(document).ready(function(){'
+                . '$("#'.$this->buttonId.'").html(\''
+                . '<span class="'.$this->buttonErrorIcon.'"></span> '
+                . $this->buttonErrorText
+                . '\');'
+            . '});'
+        . '</script>'
+        . '';
+    }
+    else{
+        $imgs = '';
+        if($this->isImage==true&&$this->showPreview==true){
+            $previewWidth  = $this->previewDim['width'];
+            $previewHeight = $this->previewDim['height'];
+            foreach($this->files as $f){
+                if(file_exists($f)){
+                    $thumb = new \PHPThumb\GD($f);
+                    $thumb->adaptiveResize($previewWidth, $previewHeight);
+                    $contents = $thumb->getImageAsString();
+                    $imgs .= '<img src=\'data:image/png;base64,'.base64_encode($contents).'\' '
+                            . ' height=\"'.$previewHeight.'\" width=\"'.$previewWidth.'\"/>';
+                }
+
+            }
+        }
+        echo''
+            . '<script type="text/javascript">'
+                . '$(document).ready(function(){'
+                    . '$("#'.$this->previewDiv.'").html("'.$imgs.'");'
+                . '});'
+            . '</script>'
+            . '';
+        
+        echo''
+        . '<script type="text/javascript">'
+            . '$(document).ready(function(){'
+                . '$("#'.$this->inputId.'").val(\''.implode(',',$this->files).'\')'
+            . '});'
+        . '</script>'
+        . '';
+        echo''
+            . '<script type="text/javascript">'
+                . '$(document).ready(function(){'
+                    . '$("#'.$this->buttonId.'").html(\''
+                    . '<span class="'.$this->buttonSuccessIcon.'"></span> '
+                    . $this->buttonSuccessText
+                    . '\');'
+                . '});'
+            . '</script>'
+            . '';
+        
+        $download = '<table style=\"text-align:center;\" '
+                . 'class=\"table table-hover table-responsive table-stripped table-bordered\">';  
+        foreach($this->files as $f){
+            $downloadLink = '<a title=\"Get Attachment\" href=\"'
+                . $this->url('fileUpload/getUpload' , array('uploadname' => $this->uploadName,'filename'=>basename($f))).'\" '
+                . 'target=\"_blank\">'
+                . '<span class=\"glyphicon glyphicon-download-alt\"></span></a>';
+            
+            $removeLink = '<span style=\"color: #bb0000; cursor: pointer;\" title=\"Remove Attachment\" '
+                . 'class=\"glyphicon glyphicon-trash\" '
+                . 'onclick=\"removeUpload(\''.$this->uploadName.'\',\''.basename($f).'\',\''.$this->downloadDiv.'\')\">'
+                . '</span>';
+            $download .= '<tr>';
+                $download .= '<td><span style=\"color: #00bb00; cursor: pointer;\" '
+                    . 'title=\"Upload Successful\" '
+                    . 'class=\"glyphicon glyphicon-ok\"'
+                    . '</span></td>';
+                $download .= '<td><small>'. resizeName(basename($f)).'</small></td>';
+                $download .= '<td><small>'.sizeFormat(filesize($f)).'</small></td>';
+                $download .= '<td>'.$downloadLink.'</td>';
+                if($this->enableRemove){
+                    $download .= '<td>'.$removeLink.'</td>';
+                }
+            $download .= '</tr>';
+        }
+        $download .= '</table>';
+        
+        echo''
+        . '<script type="text/javascript">'
+            . '$(document).ready(function(){'
+                . '$("#'.$this->downloadDiv.'").html("'.$download.'");'
+            . '});'
+        . '</script>'
+        . '';
+        /*
+        var_dump($this->previewDiv);
+        var_dump($this->uploadName);
+        var_dump($this->downloadDiv);
+        var_dump($this->isImage);
+        var_dump($this->showPreview);
+        var_dump($this->previewDim);
+        var_dump($this->errors);
+        var_dump($this->files);
+        var_dump($this->inputId);
+        */
+    }
+    function sizeFormat($size){
+        $sizetext = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+        for($i=0; $i<sizeof($sizetext); $i++){
+            if($size<(pow(1024,($i+1)))){
+                $modified = round($size/(pow(1024,($i))),1);
+                return $modified.' '.$sizetext[$i];
+            }
+        }
+        $modified = round($size/(pow(1024,($i))),1);
+        return $modified.' '.$sizetext[$i];
+    }
+    function resizeName($name){
+        $ret = $name;
+        if(strlen($name)>15){
+            $ret = substr($name, 0, 5).'...'.substr($name, -6);
+        }
+        return $ret;
+    }
