@@ -33,7 +33,12 @@
                 }
                 $imgs .= '<img src=\'data:image/png;base64,'.base64_encode($content).'\' '
                         . ' height=\"'.$previewHeight.'\" width=\"'.$previewWidth.'\"/>';
-                $fileNames[] = $f->getFileId();
+                if(is_file($f->getName())){
+                    $fileNames[] = $f->getName();
+                }
+                else{
+                    $fileNames[] = $f->getFileId();
+                }
             }
             
         }
@@ -73,7 +78,7 @@
             
             $removeLink = '<span style=\"color: #bb0000; cursor: pointer;\" title=\"Remove Attachment\" '
                 . 'class=\"glyphicon glyphicon-trash\" '
-                . 'onclick=\"removeUpload(\''.$this->uploadName.'\',\''.basename($f->getFileId()).'\',\''.$this->downloadDiv.'\')\">'
+                . 'onclick=\"removeUpload(\''.$this->uploadName.'\',\''.$f->getFileId().'\',\''.$this->downloadDiv.'\')\">'
                 . '</span>';
             $download .= '<tr>';
                 $download .= '<td><span style=\"color: #00bb00; cursor: pointer;\" '

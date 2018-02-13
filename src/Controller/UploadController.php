@@ -65,7 +65,6 @@ class UploadController extends AbstractActionController
         $uploadObj->setDestination($uploadDir);
         
         if($uploadObj->receive()){
-            $sessionSuccess = new Container('FormUploadSuccessContainer');
             $this->uploadService->removePreviousUploads($attributes, $uploadName);
             $originalNames = $uploadObj->getFileName();
             if(!is_array($originalNames)){
@@ -76,25 +75,15 @@ class UploadController extends AbstractActionController
                 $this->uploadService->cropImage($attributes['crop'], $originalNames);
             }
             
-            $names = [];
             foreach($originalNames as $f){
                 //files are stored in filesystem by default
                 //if db storage is enabled then file is deleted after it is inserted in db
                 $f = str_replace('\\', '/', $f);
-                $newname = $this->uploadService->storeFile($f, $attributes);
-                $names[] = $newname->getFileId();
+                $this->uploadService->storeFile($f, $attributes, $uploadName);
             }
-            
-            $previousUploads = [];
-
-            if($sessionSuccess->offsetExists($uploadName)){
-                $previousUploads = $sessionSuccess->$uploadName;
-            }
-            
-            $sessionSuccess->$uploadName = array_merge($names,$previousUploads);
             
             $fileObjects = $this->uploadService->getFileObjectListFromUploadName($uploadName);
-            
+
             $this->uploadService->callBack($attributes['callback'], $fileObjects);
             
             $previewDivId = $uploadName.'previewDivId';
