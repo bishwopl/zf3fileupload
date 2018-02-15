@@ -140,10 +140,25 @@ class FormFileUpload extends AbstractHelper {
             return;
         }
         $sessionSuccess = new Container('FormUploadSuccessContainer');
+        
         $savedFiles = [];
-        $fileObjs = $this->uploadService->getFileObjectListFromUploadName($uploadName);
+        $fileObjs = [];
+        if($sessionSuccess->offsetExists($uploadName)){
+            $fileObjs = $this->uploadService->getFileObjectListFromUploadName($uploadName);
+        }
+        else{
+            $files = explode(',', $value);
+            foreach ($files as $filenameorid){
+                $filenameorid = trim($filenameorid);
+                $obj = $this->uploadService->getFileObjectFromPath($filenameorid);
+                if($obj instanceof \Zf3FileUpload\Entity\FileEntityInterface){
+                    $fileObjs[] = $obj;
+                }
+            }
+        }
+        
         foreach ($fileObjs as $f){
-            $savedFiles[] = $f->getFileId();
+            $savedFiles[$f->getName()] = $f->getFileId();
         }
         if(sizeof($savedFiles)>0){
             $sessionSuccess->$uploadName = $savedFiles;
@@ -167,18 +182,8 @@ class FormFileUpload extends AbstractHelper {
         $previewDivId = $uploadName.'previewDivId';
         $validators = $atributes['validator'];
         $downloadDivId = $uploadName.'_downloadDiv';
-        $sessionSuccess = new Container('FormUploadSuccessContainer');
 
         $fileObjects = $this->uploadService->getFileObjectListFromUploadName($uploadName);
-        
-        $names = [];
-        foreach($fileObjects as $f){
-            if($f instanceof \Zf3FileUpload\Entity\FileEntityInterface){
-                $names[] = $f->getFileId();
-            }
-        }
-        
-        $sessionSuccess->$uploadName = $names;
         
         if(isset($validators['image'])&&$atributes['showPreview']){
             $previewWidth  = $atributes['preview']['width'];
@@ -211,14 +216,14 @@ class FormFileUpload extends AbstractHelper {
                 . 'class=\"table table-hover table-responsive table-stripped table-bordered\">';
         $total_files = 0;
         foreach($fileObjects as $f){
-            $downloadLink = '<a title=\"Get Attachment\" href=\"'
-                .$this->basepath.'/fileupload/get-uploaded-file/'.$uploadName.'/'.basename($f->getFileId()).'\" '
+            $downloadLink = '<a title=\"Get Attachmentttt\" href=\"'
+                .$this->basepath.'/fileupload/get-uploaded-file/'.$uploadName.'/'.$f->getFileId().'\" '
                 . 'target=\"_blank\">'
                 . '<span class=\"glyphicon glyphicon-download-alt\"></span></a>';
             $removeLink = '<span style=\"color: #bb0000; cursor: pointer;\" '
                     . 'title=\"Remove Attachment\" '
                     . 'class=\"glyphicon glyphicon-trash\" '
-                    . 'onclick=\"removeUpload(\''.$uploadName.'\',\''.basename($f->getFileId()).'\',\''.$downloadDivId.'\')\">'
+                    . 'onclick=\"removeUpload(\''.$uploadName.'\',\''.$f->getFileId().'\',\''.$downloadDivId.'\')\">'
                     . '</span>';
 
             $download .= '<tr>';

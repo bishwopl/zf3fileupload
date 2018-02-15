@@ -24,13 +24,12 @@ class DeleteController extends AbstractActionController
         $vm->setTemplate('file-upload/delete');
         
         $uploadName = $this->params()->fromRoute('uploadname');
-        $fileName = $this->params()->fromRoute('filename');
+        $fileId = $this->params()->fromRoute('filename');
         
-        if (! $uploadName || !$fileName) {
+        if (! $uploadName || !$fileId) {
             return $this->redirect()->toRoute('home');
         }
         
-        $sessionSuccess = new Container('FormUploadSuccessContainer');
         $session = new Container('FormUploadFormContainer');
         $atributes = $session->offsetGet($uploadName);
         
@@ -47,9 +46,19 @@ class DeleteController extends AbstractActionController
         $vm->setVariable('buttonErrorText', $atributes['errorText']!==''?$atributes['errorText']:$atributes['uploadText']);
         $vm->setVariable('buttonErrorIcon', $atributes['errorIcon']);
 
-        $this->uploadService->removeFileFromUploadNameAndFileName($uploadName, $fileName);
+        $this->uploadService->removeFileFromUploadNameAndFileId($uploadName, $fileId);
         
         $fileObjects = $this->uploadService->getFileObjectListFromUploadName($uploadName);
+        
+        $filteredNames = [];
+        foreach($fileObjects as $f){
+            if(is_file($f->getName())){
+                $filteredNames[] = $f->getName();
+            }
+            else{
+                $filteredNames[] = $f->getFileId();
+            }
+        }
         
         $this->uploadService->callBack($atributes['callback'], implode(',', $filteredNames));
         

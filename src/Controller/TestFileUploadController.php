@@ -49,6 +49,8 @@ class TestFileUploadController extends AbstractActionController
     
     public function indexAction()
     {
+        //$this->myForm->setData(['start_date'=>'a044f24f-561a-4dc7-90e1-e43729a8e747,5c639024-25e5-4c55-a1eb-73d0b570b067']);
+        //$this->myForm->setData(['start_date'=>'data/UserData/430e2ef6-5ed0-4085-bd4b-9d26d356176c.png,data/UserData/767427b1-40f3-4df0-93fb-df54f46e20fe.png']);
         $vm = new ViewModel();
         $vm->setTemplate("mis-base/form-compact");
         $vm->setVariable("form", $this->myForm);

@@ -1,6 +1,6 @@
 {
     "name": "bishwopl/zf3fileupload",
-    "description": "Custom file upload element for zf3, supports filesystem and doctrine storage",
+    "description": " Custom file upload element for zf3, supports filesystem and database storage(using DoctrineORM)",
     "type": "library",
     "homepage": "https://github.com/bishwopl/file-upload",
     "keywords": [
@@ -26,7 +26,7 @@
     },
     "autoload": {
         "psr-4": {
-            "FileUpload\\": "src"
+            "Zf3FileUpload\\": "src"
         }
     }
 }

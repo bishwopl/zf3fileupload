@@ -38,7 +38,7 @@ class MyForm extends Form
                 'errorText'         => 'Try Again',
                 'uploadingText'     => 'Uploading Photo...',
                 'replacePrevious'   => FALSE,
-                'radomizeName'      => TRUE,
+                'randomizeName'     => TRUE,
                 'showPreview'       => TRUE,
                 'validator' => [ 
                     'allowedExtentions' => 'jpg,png',
@@ -53,8 +53,8 @@ class MyForm extends Form
                     ],
                 ],
                 'crop' => [
-                    'width'  => 100,
-                    'height' => 100,
+                    'width'  => 200,
+                    'height' => 200,
                 ],
                 'preview'=>[
                     'width'  => 100,

@@ -177,23 +177,22 @@ class FileUploadService{
      * @param type $attributes
      * @return \Zf3FileUpload\Entity\FileEntityInterface
      */
-    public function storeFile($filePath, $attributes){
-        return $this->storageAdapter->store($filePath, $attributes);
+    public function storeFile($filePath, $attributes, $uploadName){
+        $fileObj = $this->storageAdapter->store($filePath, $attributes);
+        if($fileObj instanceof \Zf3FileUpload\Entity\FileEntityInterface){
+            $sessionSuccess = new Container('FormUploadSuccessContainer');
+            $previousUploads = [];
+            if($sessionSuccess->offsetExists($uploadName)){
+                $previousUploads = $sessionSuccess->$uploadName;
+            }
+            $previousUploads[$fileObj->getName()] = $fileObj->getFileId();
+            $sessionSuccess->$uploadName = $previousUploads;
+        }
+        return;
     }
     
     public function getFileObjectListFromUploadName($uploadName){
-        $ret = [];
-        $sessionSuccess = new Container('FormUploadSuccessContainer');
-        if($sessionSuccess->offsetExists($uploadName)){
-            $ids = $sessionSuccess->$uploadName;
-            foreach($ids as $id){
-                $obj = $this->storageAdapter->createFileObjectFromPathorId($id);
-                if($obj instanceof \Zf3FileUpload\Entity\FileEntityInterface){
-                    $ret[] = $obj;
-                }
-            }
-        }
-        return $ret;
+        return $this->storageAdapter->fetchAllFromUploadName($uploadName);
     }
 
     /**
@@ -201,31 +200,24 @@ class FileUploadService{
      * @param string $path
      * @return \Zf3FileUpload\Entity\FileEntityInterface
      */
-    public function getFileObjectFromPathOrId($path){
-        return $this->storageAdapter->createFileObjectFromPathorId($path);
+    public function getFileObjectFromPath($path){
+        $obj = $this->storageAdapter->createFileObjectFromPath($path);
+        if(!($obj instanceof \Zf3FileUpload\Entity\FileEntityInterface)){
+            $obj = $this->storageAdapter->fetchObjectFromUploadNameandFileId('',$path);
+        }
+        return $obj;
     }
     
     public function removeFileFromIdOrPath($path){
         return $this->storageAdapter->remove($path);
     }
     
-    public function getFileObjectFromUploadNameAndFileName($uploadName, $fileName){
-        $sessionSuccess = new Container('FormUploadSuccessContainer');
-        $fileObject = [];
-        
-        if($sessionSuccess->offsetExists($uploadName)){
-            $files = $sessionSuccess->$uploadName;
-        }
-        
-        foreach($files as $f){
-            if($fileName == basename($f)){
-                $fileObject = $this->storageAdapter->createFileObjectFromPathorId($f);
-            }
-        }
-        return $fileObject;
+    public function getFileObjectFromUploadNameAndFileName($uploadName, $fileId){
+        return $fileObject = $this->storageAdapter->fetchObjectFromUploadNameandFileId($uploadName, $fileId);
     }
     
-    public function removeFileFromUploadNameAndFileName($uploadName, $fileName){
+    public function removeFileFromUploadNameAndFileId($uploadName, $fileId){
+        
         $sessionSuccess = new Container('FormUploadSuccessContainer');
         $session = new Container('FormUploadFormContainer');
         $atributes = $session->offsetGet($uploadName);
@@ -239,12 +231,15 @@ class FileUploadService{
         }
         
         $remaining = [];
-        foreach($files as $f){
-            if($fileName == basename($f)){
-                $this->storageAdapter->remove($f);
+        
+        foreach($files as $filePath=>$fileUuid){
+            
+            if($fileId == $fileUuid.''){
+                
+                $res = $this->storageAdapter->remove($fileUuid, $filePath);
             }
             else{
-                $remaining[] = $f;
+                $remaining[$filePath] = $fileUuid;
             }
         }
         

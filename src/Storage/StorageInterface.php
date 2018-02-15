@@ -18,19 +18,25 @@ interface StorageInterface {
 
     /**
      * 
-     * @param string $path
+     * @param type $fileUuid
+     * @param type $filePath
      */
-    public function remove($path);
+    public function remove($fileUuid, $filePath);
 
     /**
      * @param type $pathOrId
      * @return \Zf3FileUpload\Entity\FileEntityInterface 
      */
-    public function createFileObjectFromPathorId($pathOrId);
+    public function createFileObjectFromUploadNameandFileId($uploadName, $fileId);
     
      /**
      * @param type $pathOrId
      * @return \Zf3FileUpload\Entity\FileEntityInterface  | NULL
      */
-    public function fetchObjectFromPathorId($pathOrId);
+    public function fetchObjectFromUploadNameandFileId($uploadName, $fileId);
+    
+    public function fetchAllFromUploadName($uploadName);
+
+    public function createFileObjectFromPath($path);
+
 }
