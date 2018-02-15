@@ -139,7 +139,7 @@ return [
             'file-upload' => __DIR__ . '/../view',
         ],
         'template_map' => [
-            'file-upload/delete' => __DIR__ . '/../view/file-upload/upload/index.phtml',
+            'file-upload/delete' => __DIR__ . '/../view/zf3-file-upload/upload/index.phtml',
         ],
     ],
 ];
