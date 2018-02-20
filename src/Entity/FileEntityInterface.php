@@ -8,9 +8,9 @@ namespace Zf3FileUpload\Entity;
 
 interface FileEntityInterface {
     
-    public function setFileId(\Ramsey\Uuid\UuidInterface $uuid);
+    public function setId(\Ramsey\Uuid\UuidInterface $uuid);
     
-    public function getFileId();
+    public function getId();
 
     /**
      * Set name
