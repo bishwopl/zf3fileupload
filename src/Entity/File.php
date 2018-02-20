@@ -20,12 +20,12 @@ class File implements FileEntityInterface
     /**
      * @var \Ramsey\Uuid\Uuid
      *
-     * @ORM\Column(name="file_id", type="uuid", length=36, nullable=false)
+     * @ORM\Column(name="id", type="uuid", length=36, nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class="Ramsey\Uuid\Doctrine\UuidGenerator")
      */
-    private $fileId;
+    private $id;
 
     /**
      * @var string
@@ -64,7 +64,7 @@ class File implements FileEntityInterface
 
 
     public function __construct() {
-        $this->fileId = \Ramsey\Uuid\Uuid::uuid4();
+        $this->id = \Ramsey\Uuid\Uuid::uuid4();
     }
     
     /**
@@ -72,9 +72,9 @@ class File implements FileEntityInterface
      *
      * @return uuid
      */
-    public function getFileId()
+    public function getId()
     {
-        return $this->fileId;
+        return $this->id;
     }
 
     /**
