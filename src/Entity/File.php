@@ -196,7 +196,7 @@ class File implements FileEntityInterface
     {
         return $this->content;
     }
-
+ 
     public function setId(\Ramsey\Uuid\UuidInterface $uuid) {
         $this->id = $uuid;
     }
