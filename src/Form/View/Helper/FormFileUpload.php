@@ -158,7 +158,7 @@ class FormFileUpload extends AbstractHelper {
         }
         
         foreach ($fileObjs as $f){
-            $savedFiles[$f->getName()] = $f->getFileId();
+            $savedFiles[$f->getName()] = $f->getId();
         }
         if(sizeof($savedFiles)>0){
             $sessionSuccess->$uploadName = $savedFiles;
@@ -197,7 +197,7 @@ class FormFileUpload extends AbstractHelper {
                 }
                 $imgs .= '<img src=\'data:image/png;base64,'.base64_encode($content).'\' '
                         . ' height=\"'.$previewHeight.'\" width=\"'.$previewWidth.'\"/>';
-                $names[] = $f->getFileId();
+                $names[] = $f->getId();
             }
             $response.=''
             . '<script type="text/javascript">'
@@ -217,13 +217,13 @@ class FormFileUpload extends AbstractHelper {
         $total_files = 0;
         foreach($fileObjects as $f){
             $downloadLink = '<a title=\"Get Attachmentttt\" href=\"'
-                .$this->basepath.'/fileupload/get-uploaded-file/'.$uploadName.'/'.$f->getFileId().'\" '
+                .$this->basepath.'/fileupload/get-uploaded-file/'.$uploadName.'/'.$f->getId().'\" '
                 . 'target=\"_blank\">'
                 . '<span class=\"glyphicon glyphicon-download-alt\"></span></a>';
             $removeLink = '<span style=\"color: #bb0000; cursor: pointer;\" '
                     . 'title=\"Remove Attachment\" '
                     . 'class=\"glyphicon glyphicon-trash\" '
-                    . 'onclick=\"removeUpload(\''.$uploadName.'\',\''.$f->getFileId().'\',\''.$downloadDivId.'\')\">'
+                    . 'onclick=\"removeUpload(\''.$uploadName.'\',\''.$f->getId().'\',\''.$downloadDivId.'\')\">'
                     . '</span>';
 
             $download .= '<tr>';
