@@ -2,8 +2,6 @@
 namespace Zf3FileUpload\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
-use Zend\Session\Container;
 
 use Zf3FileUpload\Service\FileUploadService;
 
@@ -36,7 +34,6 @@ class DownloadController extends AbstractActionController
             if(!is_string($content)){
                 $content = stream_get_contents($fileObject->getContent());
             }
-            //echo "heasdasasdasdadsdasre"; die();
             
             ob_clean();
             header("Content-Type: $mime"); 

@@ -185,7 +185,7 @@ class FileUploadService{
             if($sessionSuccess->offsetExists($uploadName)){
                 $previousUploads = $sessionSuccess->$uploadName;
             }
-            $previousUploads[$fileObj->getName()] = $fileObj->getFileId();
+            $previousUploads[$fileObj->getName()] = $fileObj->getId();
             $sessionSuccess->$uploadName = $previousUploads;
         }
         return;

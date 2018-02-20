@@ -83,7 +83,7 @@ class DoctrineStorageAdapter implements StorageInterface {
             $fileObj->setContent($content);
             $fileObj->setExtention($ext);
             $fileObj->setMime($mime);
-            $fileObj->setName($fileObj->getFileId() . '.' . $fileObj->getExtention());
+            $fileObj->setName($fileObj->getId() . '.' . $fileObj->getExtention());
             $fileObj->setSize(filesize($pathOrId));
             $this->objectManager->persist($fileObj);
             $this->objectManager->flush();

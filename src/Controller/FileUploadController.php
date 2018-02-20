@@ -3,7 +3,6 @@ namespace Zf3FileUpload\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Zend\Session\Container;
 
 use Zf3FileUpload\Service\FileUploadService;
 

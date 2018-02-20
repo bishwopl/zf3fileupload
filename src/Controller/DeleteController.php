@@ -56,7 +56,7 @@ class DeleteController extends AbstractActionController
                 $filteredNames[] = $f->getName();
             }
             else{
-                $filteredNames[] = $f->getFileId();
+                $filteredNames[] = $f->getId();
             }
         }
         

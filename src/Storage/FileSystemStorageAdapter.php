@@ -69,7 +69,7 @@ class FileSystemStorageAdapter implements StorageInterface{
             $mime    = finfo_file($finfo, $pathOrId);
             $content = file_get_contents($pathOrId);
             
-            $fileObj->setFileId($uuid);
+            $fileObj->setId($uuid);
             $fileObj->setContent($content);
             $fileObj->getExtention($ext);
             $fileObj->setMime($mime);
@@ -89,7 +89,7 @@ class FileSystemStorageAdapter implements StorageInterface{
             $fileUuidString = $fileUuid->toString();
             if($fileUuidString == $fileId){
                 $fileObject = $this->createFileObjectFromPath($fileName);
-                $fileObject->setFileId($fileUuid);
+                $fileObject->setId($fileUuid);
                 break;
             }
         }
@@ -105,7 +105,7 @@ class FileSystemStorageAdapter implements StorageInterface{
             $mime = finfo_file(finfo_open(FILEINFO_MIME_TYPE), $path);
             $content = file_get_contents($path);
 
-            $fileObj->setFileId($uuid);
+            $fileObj->setId($uuid);
             $fileObj->setContent($content);
             $fileObj->setExtention($ext);
             $fileObj->setMime($mime);
@@ -123,7 +123,7 @@ class FileSystemStorageAdapter implements StorageInterface{
             foreach($ids as $fileName=>$fileUuid){
                 $obj = $this->createFileObjectFromPath($fileName);
                 if($obj instanceof \Zf3FileUpload\Entity\FileEntityInterface){
-                    $obj->setFileId($fileUuid);
+                    $obj->setId($fileUuid);
                     $ret[] = $obj;
                 }
             }
