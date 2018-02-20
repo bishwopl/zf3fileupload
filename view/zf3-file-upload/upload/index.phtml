@@ -37,7 +37,7 @@
                     $fileNames[] = $f->getName();
                 }
                 else{
-                    $fileNames[] = $f->getFileId();
+                    $fileNames[] = $f->getId();
                 }
             }
             
@@ -72,13 +72,13 @@
                 . 'class=\"table table-hover table-responsive table-stripped table-bordered\">';  
         foreach($this->files as $f){
             $downloadLink = '<a title=\"Get Attachment\" href=\"'
-                . $this->url('fileUpload/getUpload' , array('uploadname' => $this->uploadName,'filename'=>$f->getFileId())).'\" '
+                . $this->url('fileUpload/getUpload' , array('uploadname' => $this->uploadName,'filename'=>$f->getid())).'\" '
                 . 'target=\"_blank\">'
                 . '<span class=\"glyphicon glyphicon-download-alt\"></span></a>';
             
             $removeLink = '<span style=\"color: #bb0000; cursor: pointer;\" title=\"Remove Attachment\" '
                 . 'class=\"glyphicon glyphicon-trash\" '
-                . 'onclick=\"removeUpload(\''.$this->uploadName.'\',\''.$f->getFileId().'\',\''.$this->downloadDiv.'\')\">'
+                . 'onclick=\"removeUpload(\''.$this->uploadName.'\',\''.$f->getId().'\',\''.$this->downloadDiv.'\')\">'
                 . '</span>';
             $download .= '<tr>';
                 $download .= '<td><span style=\"color: #00bb00; cursor: pointer;\" '

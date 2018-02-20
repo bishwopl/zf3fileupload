@@ -93,7 +93,7 @@ class DoctrineStorageAdapter implements StorageInterface {
     }
 
     public function fetchObjectFromUploadNameandFileId($uploadName, $fileId) {
-        $obj = $this->repository->findOneBy(['fileId' => $fileId]);
+        $obj = $this->repository->findOneBy(['id' => $fileId]);
         return $obj;
     }
 
