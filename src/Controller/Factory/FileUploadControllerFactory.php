@@ -1,7 +1,6 @@
 <?php
 namespace Zf3FileUpload\Controller\Factory;
 
-use Zf3FileUpload\Controller\FileUploadController;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 

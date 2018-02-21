@@ -5,7 +5,6 @@ use Zend\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 
 use Zf3FileUpload\Form\MyForm;
-use Zf3FileUpload\Controller\TestFileUploadController;
 
 class TestFileUploadControllerFactory implements FactoryInterface
 {   
