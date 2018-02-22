@@ -2,7 +2,6 @@
 
 return [
     "zf3_file_uploadmodule_options"=>[
-        "storage" => "filesystem", // "filesystem" or "db"
         "objectmanager" => "",     // service key of the object manager
         "entity" => "",            // FQCN of database entity to use
     ]

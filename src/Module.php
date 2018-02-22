@@ -63,7 +63,13 @@ class Module implements
                 \Zf3FileUpload\Service\Factory\FileUploadServiceFactory::class,
                 
                 \Zf3FileUpload\Storage\StorageInterface::class => 
-                \Zf3FileUpload\Storage\Factory\StorageAdapterFactory::class 
+                \Zf3FileUpload\Storage\Factory\StorageAdapterFactory::class, 
+                
+                \Zf3FileUpload\Storage\FileSystemStorageAdapter::class => 
+                \Zf3FileUpload\Storage\Factory\FileSystemStorageAdapterFactory::class,
+                
+                \Zf3FileUpload\Storage\DoctrineStorageAdapter::class => 
+                \Zf3FileUpload\Storage\Factory\DoctrineStorageAdapterFactory::class,
             ],
         ];
     }

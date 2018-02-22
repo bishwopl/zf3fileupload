@@ -37,8 +37,11 @@ class DoctrineStorageAdapter implements StorageInterface {
 
     public function remove($fileUuid, $filePath) {
         $obj = $this->fetchObjectFromUploadNameandFileId('',$fileUuid);
-        $this->objectManager->remove($obj);
-        $this->objectManager->flush();
+        if(is_object($obj)){
+            $this->objectManager->remove($obj);
+            $this->objectManager->flush();
+        }
+        return;
     }
 
     public function store($file, $attributes) {
