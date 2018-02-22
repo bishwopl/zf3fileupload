@@ -59,7 +59,7 @@ class FormFileUpload extends AbstractHelper {
         $helpText = 'Min Size : '.  $this->sizeFormat($validators['minSize']).', '
                 . 'Max Size : '.$this->sizeFormat($validators['maxSize']).', '
                 . 'Allowed Types : '.$validators['allowedExtentions'];
-        
+
         return '<div class="row">'
                 . '<div class="col-sm-6">'
                 . '<input type="hidden" name="'.$field_name.'" id="'.$uploadNameId.'">'
@@ -76,6 +76,9 @@ class FormFileUpload extends AbstractHelper {
                 . '<div id="'.$responseDivId.'" style="display:none;"></div>'
                 . '<script type="text/javascript">'
                 . '$(document).ready(function(){'
+                    . 'var minSize = '.$validators['minSize'].';'
+                    . 'var maxSize = '.$validators['maxSize'].';'
+                    . 'var allowedExtentions = '.json_encode(explode(',', $validators['allowedExtentions'])).';'
                     . '$(\'#'.$buttonId.'\').click(function(){'
                         . 'if ($(\'#'.$addedFormDivId.'\').length == 0) {'
                             . '$("body").append(\''
@@ -93,6 +96,28 @@ class FormFileUpload extends AbstractHelper {
                     . '});'
                     . '$( document ).on( \'change\', \'#'.$actualUploadButtonId.'\', function() { '
                         . '$(\'#'.$actualUploadformId.'\').ajaxForm({'
+                            . 'beforeSubmit: function(arr, $form, options) {'
+                                . 'var isValid = true;'
+                                . 'var selected_files = document.getElementById(\''.$actualUploadButtonId.'\').files;'
+                                . 'var msg = "";'
+                                . 'for(var i=0; i<selected_files.length; i++){'
+                                    . 'var fileName = selected_files[i].name;'
+                                    . 'var fileSize = selected_files[i].size;'
+                                    . 'var fileExtention = fileName.split(".").pop().toLowerCase();'
+                                    . 'if((fileSize<minSize) || (fileSize>maxSize)){'
+                                        . 'isValid = false;'
+                                        . 'msg += "Size of "+fileName+" is "+humanFileSize(fileSize)+" but must be within "+humanFileSize(minSize)+" to " +humanFileSize(maxSize)+"\n";'
+                                    . '}'
+                                    . 'if($.inArray(fileExtention, allowedExtentions)===-1){'
+                                        . 'isValid = false;'
+                                        . 'msg += "File type of "+fileName+" is "+fileExtention+" but must be "+"'. str_replace(',', ' or ', $validators['allowedExtentions']). '"+"\n";'
+                                    . '}'
+                                . '}'
+                                . 'if(!isValid){'
+                                    . 'alert("Error(s) occoured: \n\n"+msg+"\n Please try again!");'
+                                . '}'
+                                . 'return isValid;'
+                            . '},'
                             . 'beforeSend: function() {'
                                 . '$(\'#'.$buttonId.'\').button(\'loading\');'
                                 . 'var percentVal = \'0%\';'
@@ -122,6 +147,10 @@ class FormFileUpload extends AbstractHelper {
                 . '});'
                 . '</script>'.$this->reload($uploadName, $attr)
                 . '<script type="text/javascript">'
+                    . "function humanFileSize(size) {"
+                        . "var i = Math.floor( Math.log(size) / Math.log(1024) ); "
+                        . "return ( size / Math.pow(1024, i) ).toFixed(2) * 1 + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][i];"
+                    . "}" 
                     . 'function removeUpload(uploadName, fileName, divName){'
                         . 'var url = \''.$this->basepath.'/fileupload/remove-uploaded-file/\'+uploadName+\'/\'+fileName;'
                         . 'var newDivName = "#"+divName;'
