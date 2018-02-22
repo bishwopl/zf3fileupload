@@ -150,7 +150,7 @@ class FormFileUpload extends AbstractHelper {
             $files = explode(',', $value);
             foreach ($files as $filenameorid){
                 $filenameorid = trim($filenameorid);
-                $obj = $this->uploadService->getFileObjectFromPath($filenameorid);
+                $obj = $this->uploadService->getFileObjectFromPath($uploadName, $filenameorid);
                 if($obj instanceof \Zf3FileUpload\Entity\FileEntityInterface){
                     $fileObjs[] = $obj;
                 }

@@ -25,6 +25,7 @@ class MyForm extends Form
             'attributes' => [
                 'formUniqueId'      => 'photo_',
                 'id'                => 'photoPathId',
+                'storage'           => 'db', // 'filesystem' or 'db
                 'showProgress'      => TRUE,
                 'multiple'          => TRUE,
                 'enableRemove'      => TRUE,
@@ -37,7 +38,7 @@ class MyForm extends Form
                 'successText'       => 'Change Photo',
                 'errorText'         => 'Try Again',
                 'uploadingText'     => 'Uploading Photo...',
-                'replacePrevious'   => FALSE,
+                'replacePrevious'   => true,
                 'randomizeName'     => TRUE,
                 'showPreview'       => TRUE,
                 'validator' => [ 

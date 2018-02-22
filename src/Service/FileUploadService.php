@@ -19,14 +19,22 @@ class FileUploadService{
      */
     protected $storageAdapter;
     
+    /**
+     * @var type 
+     */
+    protected $adapters;
+
+    /**
+     * @var type 
+     */
     protected $serviceLocator;
 
     public function __construct(
-            StorageInterface $storageAdapter, 
+            $adapters,
             $serviceLocator, 
             ModuleOptions $moduleOptions
     ) {
-        $this->storageAdapter = $storageAdapter;
+        $this->adapters       = $adapters;
         $this->serviceLocator = $serviceLocator;
         $this->moduleOptions  = $moduleOptions;
     }
@@ -128,26 +136,17 @@ class FileUploadService{
     }
 
     public function removePreviousUploads($atributes,$uploadName){
+        $this->getAppropriateAdapter($uploadName);
         $sessionSuccess = new Container('FormUploadSuccessContainer');
         if($atributes['replacePrevious']==true){
             $files = $sessionSuccess->offsetGet($uploadName);
-            foreach ($files as $key=>$f){
-                if(file_exists($f)){
-                    unlink($f);
-                }
-                unset($files[$key]);
+            foreach ($files as $filePath=>$fileUuid){
+                $this->storageAdapter->remove($fileUuid, $filePath);
+                unset($files[$fileUuid]);
             }
             $sessionSuccess->$uploadName = $files;
         }
         return;
-    }
-    
-    public function clearUploaInfo(){
-        /*$sessionSuccess = new Container('FormUploadSuccessContainer');
-        $session = new Container('FormUploadFormContainer');
-        $session->exchangeArray([]);
-        $sessionSuccess->exchangeArray([]);
-        */
     }
 
     public function callBack($callBack, $uploadedFileNames){
@@ -178,6 +177,7 @@ class FileUploadService{
      * @return \Zf3FileUpload\Entity\FileEntityInterface
      */
     public function storeFile($filePath, $attributes, $uploadName){
+        $this->getAppropriateAdapter($uploadName);
         $fileObj = $this->storageAdapter->store($filePath, $attributes);
         if($fileObj instanceof \Zf3FileUpload\Entity\FileEntityInterface){
             $sessionSuccess = new Container('FormUploadSuccessContainer');
@@ -192,6 +192,7 @@ class FileUploadService{
     }
     
     public function getFileObjectListFromUploadName($uploadName){
+        $this->getAppropriateAdapter($uploadName);
         return $this->storageAdapter->fetchAllFromUploadName($uploadName);
     }
 
@@ -200,7 +201,8 @@ class FileUploadService{
      * @param string $path
      * @return \Zf3FileUpload\Entity\FileEntityInterface
      */
-    public function getFileObjectFromPath($path){
+    public function getFileObjectFromPath($uploadName, $path){
+        $this->getAppropriateAdapter($uploadName);
         $obj = $this->storageAdapter->createFileObjectFromPath($path);
         if(!($obj instanceof \Zf3FileUpload\Entity\FileEntityInterface)){
             $obj = $this->storageAdapter->fetchObjectFromUploadNameandFileId('',$path);
@@ -208,16 +210,13 @@ class FileUploadService{
         return $obj;
     }
     
-    public function removeFileFromIdOrPath($path){
-        return $this->storageAdapter->remove($path);
-    }
-    
     public function getFileObjectFromUploadNameAndFileName($uploadName, $fileId){
+        $this->getAppropriateAdapter($uploadName);
         return $fileObject = $this->storageAdapter->fetchObjectFromUploadNameandFileId($uploadName, $fileId);
     }
     
     public function removeFileFromUploadNameAndFileId($uploadName, $fileId){
-        
+        $this->getAppropriateAdapter($uploadName);
         $sessionSuccess = new Container('FormUploadSuccessContainer');
         $session = new Container('FormUploadFormContainer');
         $atributes = $session->offsetGet($uploadName);
@@ -244,5 +243,18 @@ class FileUploadService{
         }
         
         $sessionSuccess->$uploadName = $remaining;
+    }
+    
+    private function getAppropriateAdapter($uploadName){
+        $session = new Container('FormUploadFormContainer');
+        $atributes = $session->offsetGet($uploadName);
+        $adapter_keys = array_keys($this->adapters);
+        
+        if(isset($atributes['storage']) && in_array($atributes['storage'], $adapter_keys)){
+            $this->storageAdapter = $this->adapters[$atributes['storage']];
+        }
+        else{
+            $this->storageAdapter = $this->adapters['filesystem'];
+        }
     }
 }
