@@ -1,6 +1,18 @@
 # zf3fileupload
 Custom file upload element for zf3, supports filesystem and database storage(using DoctrineORM)
 
+# Requirements
+*"php": "^5.6 || ^7.0",
+*"zendframework/zend-cache": "^2.7.1",
+*"zendframework/zend-mvc-form": "^1.0",
+*"zendframework/zend-mvc-plugins": "^1.0.1",
+*"zendframework/zend-session": "^2.7.1",
+*"zendframework/zend-servicemanager-di": "^1.0",
+*"doctrine/doctrine-orm-module": "^1.1",
+*"ramsey/uuid": "^3.7",
+*"ramsey/uuid-doctrine": "^1.4",
+*"masterexploder/phpthumb": "^2.1"
+
 # Sample Element
 ```php
     public function init()
