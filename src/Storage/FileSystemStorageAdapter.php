@@ -28,54 +28,21 @@ class FileSystemStorageAdapter implements StorageInterface{
         $ext = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
         $dir = pathinfo($filePath, PATHINFO_DIRNAME);
         
-        if(isset($attributes['randomizeName'])&&$attributes['randomizeName']==TRUE){
+        if(isset($attributes['newName'])&&trim($attributes['newName'])!=''){
+            $newname = $dir.'/'.trim(basename($attributes['newName']));
+        }
+        elseif(isset($attributes['randomizeName'])&&$attributes['randomizeName']==TRUE){
             $uuid = \Ramsey\Uuid\Uuid::uuid4();
             $newname = $dir.'/'.$uuid.'.'.$ext;
-        }
-        elseif(isset($attributes['newName'])&&trim($attributes['newName'])!=''){
-            $newname = $dir.'/'.trim($attributes['newName']).'.'.$ext;
         }
         else{
             $newname = preg_replace('/\s+/', '', $filePath);
         }
-        
+
         rename($filePath, $newname);
+        
         $fileObj = $this->createFileObjectFromPath($newname);
         
-        return $fileObj;
-    }
-
-    public function createFileObjectFromUploadNameandFileId($uploadName, $fileId) {
-        $fileObj = NULL;
-        
-        $sessionSuccess = new Container('FormUploadSuccessContainer');
-        $previousUploads = $sessionSuccess->$uploadName;
-        
-        foreach($previousUploads as $fileName=>$fileIdLoop){
-            $fileIdLoop = is_object($fileIdLoop)?$fileIdLoop->toSring():$fileIdLoop;
-            if($fileId==$fileIdLoop){
-                echo 'dkjskdfsd';
-            }
-        }
-        
-        if($fileObj instanceof FileEntityInterface && is_file($fileName)){
-            $fileObj = clone $this->fileObject;
-            $uuid = \Ramsey\Uuid\Uuid::uuid4();
-            
-            $ext     = pathinfo($pathOrId, PATHINFO_EXTENSION);
-            $name    = $pathOrId;
-            $size    = filesize($pathOrId);
-            $finfo   = finfo_open(FILEINFO_MIME_TYPE);
-            $mime    = finfo_file($finfo, $pathOrId);
-            $content = file_get_contents($pathOrId);
-            
-            $fileObj->setId($uuid);
-            $fileObj->setContent($content);
-            $fileObj->getExtention($ext);
-            $fileObj->setMime($mime);
-            $fileObj->setName($name);
-            $fileObj->setSize($size);
-        }
         return $fileObj;
     }
 

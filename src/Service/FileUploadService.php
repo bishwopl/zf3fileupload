@@ -138,7 +138,7 @@ class FileUploadService{
     public function removePreviousUploads($atributes,$uploadName){
         $this->getAppropriateAdapter($uploadName);
         $sessionSuccess = new Container('FormUploadSuccessContainer');
-        if($atributes['replacePrevious']==true){
+        if($atributes['replacePrevious']==TRUE || $atributes['multiple']=FALSE){
             $files = $sessionSuccess->offsetGet($uploadName);
             foreach ($files as $filePath=>$fileUuid){
                 $this->storageAdapter->remove($fileUuid, $filePath);
