@@ -12,6 +12,7 @@ Custom file upload element for zf3, supports filesystem and database storage(usi
 * "ramsey/uuid": "^3.7",
 * "ramsey/uuid-doctrine": "^1.4",
 * "masterexploder/phpthumb": "^2.1"
+* [jquery form plugin](http://malsup.com/jquery/form/)
 
 # Sample Element
 ```php
