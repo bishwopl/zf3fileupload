@@ -2,16 +2,16 @@
 Custom file upload element for zf3, supports filesystem and database storage(using DoctrineORM)
 
 # Requirements
-* "php": "^5.6 || ^7.0",
-* "zendframework/zend-cache": "^2.7.1",
-* "zendframework/zend-mvc-form": "^1.0",
-* "zendframework/zend-mvc-plugins": "^1.0.1",
-* "zendframework/zend-session": "^2.7.1",
-* "zendframework/zend-servicemanager-di": "^1.0",
-* "doctrine/doctrine-orm-module": "^1.1",
-* "ramsey/uuid": "^3.7",
-* "ramsey/uuid-doctrine": "^1.4",
-* "masterexploder/phpthumb": "^2.1"
+* php: ^5.6 || ^7.0,
+* [zendframework/zend-cache: ^2.7.1](https://github.com/zendframework/zend-cache)
+* [zendframework/zend-mvc-form: ^1.0](https://github.com/zendframework/zend-mvc-form)
+* [zendframework/zend-mvc-plugins: ^1.0.1](https://github.com/zendframework/zend-mvc-plugins)
+* [zendframework/zend-session: ^2.7.1](https://github.com/[zendframework/zend-session)
+* [zendframework/zend-servicemanager-di: ^1.0](https://github.com/zendframework/zend-servicemanager-di)
+* [doctrine/doctrine-orm-module: ^1.1](https://github.com/doctrine/doctrine-orm-module)
+* [ramsey/uuid: ^3.7](https://github.com/ramsey/uuid)
+* [ramsey/uuid-doctrine: ^1.4](https://github.com/ramsey/uuid-doctrine)
+* [masterexploder/phpthumb: ^2.1](https://github.com/masterexploder/phpthumb)
 * [jquery form plugin](http://malsup.com/jquery/form/)
 * [Bootstrap 3.* ](https://getbootstrap.com/docs/3.3/)
 
