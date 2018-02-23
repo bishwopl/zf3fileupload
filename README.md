@@ -8,6 +8,7 @@ Custom file upload element for zf3, supports filesystem and database storage(usi
 * [zendframework/zend-mvc-plugins: ^1.0.1](https://github.com/zendframework/zend-mvc-plugins)
 * [zendframework/zend-session: ^2.7.1](https://github.com/zendframework/zend-session)
 * [zendframework/zend-servicemanager-di: ^1.0](https://github.com/zendframework/zend-servicemanager-di)
+* [zendframework/zend-file: ^2.7](https://github.com/zendframework/zend-file)
 * [doctrine/doctrine-orm-module: ^1.1](https://github.com/doctrine/DoctrineORMModule)
 * [ramsey/uuid: ^3.7](https://github.com/ramsey/uuid)
 * [ramsey/uuid-doctrine: ^1.4](https://github.com/ramsey/uuid-doctrine)
