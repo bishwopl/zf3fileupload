@@ -164,10 +164,16 @@ class FormFileUpload extends AbstractHelper {
     }
 
     public function setData(ElementInterface $element, $uploadName){
+        
+        $session = new Container('FormUploadFormContainer');
+        $attributes = $element->getAttributes();
+        $session->$uploadName = $attributes;
+        
         $value = $element->getValue();
         if($value==''){
             return;
         }
+        
         $sessionSuccess = new Container('FormUploadSuccessContainer');
         
         $savedFiles = [];
@@ -188,21 +194,20 @@ class FormFileUpload extends AbstractHelper {
         
         foreach ($fileObjs as $f){
             $savedFiles[$f->getName()] = $f->getId();
+            
+            //this ensures name ad id of file remains same after edit so associaions are not broken
+            if($attributes['multiple']==FALSE){
+                $attributes['newName'] = $f->getName();
+                $attributes['newId'] = $f->getId();
+            }
         }
         if(sizeof($savedFiles)>0){
             $sessionSuccess->$uploadName = $savedFiles;
         }
+        $session->$uploadName = $attributes;
     }
     
     public function __invoke(ElementInterface $element = null) {
-        $session = new Container('FormUploadFormContainer');
-        $field_name = $element->getAttribute('name')!==''?$element->getAttribute('name'):'';
-        $formUniqueId = $element->getAttribute('formUniqueId');
-        $uploadName = str_replace('[', '_', $field_name).'___';
-        $uploadName = str_replace(']', '_', $uploadName).$formUniqueId;
-        
-        
-        $session->$uploadName = $element->getAttributes();
         return $this->render($element);
     }
     

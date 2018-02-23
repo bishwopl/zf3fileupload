@@ -22,8 +22,6 @@ class File implements FileEntityInterface
      *
      * @ORM\Column(name="id", type="uuid", length=36, nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class="Ramsey\Uuid\Doctrine\UuidGenerator")
      */
     private $id;
 

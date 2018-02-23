@@ -1,16 +1,6 @@
 <?php
 namespace Zf3FileUpload;
 return [
-    'controllers' => [
-        'factories' => [
-            
-        ],
-    ],
-    'service_manager' => [
-        'factories' => [
-            
-        ],
-    ],
     'doctrine' => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [

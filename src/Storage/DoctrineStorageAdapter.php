@@ -48,49 +48,27 @@ class DoctrineStorageAdapter implements StorageInterface {
         $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
         $dir = pathinfo($file, PATHINFO_DIRNAME);
         
-        if(isset($attributes['randomizeName'])&&$attributes['randomizeName']==TRUE){
+        if(isset($attributes['newName'])&&trim($attributes['newName'])!=''){
+            $newname = $dir.'/'.trim(basename($attributes['newName']));
+        }
+        elseif(isset($attributes['randomizeName'])&&$attributes['randomizeName']==TRUE){
             $uuid = \Ramsey\Uuid\Uuid::uuid4();
             $newname = $dir.'/'.$uuid.'.'.$ext;
         }
-        elseif(isset($attributes['newName'])&&trim($attributes['newName'])!=''){
-            $newname = $dir.'/'.trim($attributes['newName']).'.'.$ext;
-        }
         else{
-            $newname = preg_replace('/\s+/', '', $filePath);
+            $newname = preg_replace('/\s+/', '', $file);
         }
         
         rename($file, $newname);
         
         $fileObj = $this->createFileObjectFromPath($newname);
         if($fileObj instanceof \Zf3FileUpload\Entity\FileEntityInterface){
+            if($attributes['multiple']==FALSE && isset($attributes['newId']) && ($attributes['newId'] instanceof \Ramsey\Uuid\UuidInterface)){
+                $fileObj->setId($attributes['newId']);
+            }
             $this->objectManager->persist($fileObj);
             $this->objectManager->flush();
             $fileObj = $this->repository->findOneBy([ 'name' => $fileObj->getName() ]);
-        }
-        return $fileObj;
-    }
-
-    public function createFileObjectFromUploadNameandFileId($uploadName, $fileId) {
-
-        $fileObj = $this->fetchObjectFromPathorId($pathOrId);
-        if ($fileObj instanceof \Zf3FileUpload\Entity\FileEntityInterface) {
-            return $fileObj;
-        }
-
-        if (is_file($pathOrId)) {
-            $fileObj = clone $this->fileObject;
-            $ext = strtolower(pathinfo($pathOrId, PATHINFO_EXTENSION));
-            $mime = finfo_file(finfo_open(FILEINFO_MIME_TYPE), $pathOrId);
-            $content = file_get_contents($pathOrId);
-
-            $fileObj->setContent($content);
-            $fileObj->setExtention($ext);
-            $fileObj->setMime($mime);
-            $fileObj->setName($fileObj->getId() . '.' . $fileObj->getExtention());
-            $fileObj->setSize(filesize($pathOrId));
-            $this->objectManager->persist($fileObj);
-            $this->objectManager->flush();
-            unlink($pathOrId);
         }
         return $fileObj;
     }
