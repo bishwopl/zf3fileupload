@@ -66,7 +66,7 @@ class DoctrineStorageAdapter implements StorageInterface {
             if($attributes['multiple']==FALSE && isset($attributes['newId']) && ($attributes['newId'] instanceof \Ramsey\Uuid\UuidInterface)){
                 $fileObj->setId($attributes['newId']);
             }
-            $this->objectManager->persist($fileObj);
+            $this->objectManager->merge($fileObj);
             $this->objectManager->flush();
             $fileObj = $this->repository->findOneBy([ 'name' => $fileObj->getName() ]);
         }
