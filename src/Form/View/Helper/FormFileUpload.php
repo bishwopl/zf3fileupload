@@ -250,7 +250,7 @@ class FormFileUpload extends AbstractHelper {
                 . 'class=\"table table-hover table-responsive table-stripped table-bordered\">';
         $total_files = 0;
         foreach($fileObjects as $f){
-            $downloadLink = '<a title=\"Get Attachmentttt\" href=\"'
+            $downloadLink = '<a title=\"Get Attachment\" href=\"'
                 .$this->basepath.'/fileupload/get-uploaded-file/'.$uploadName.'/'.$f->getId().'\" '
                 . 'target=\"_blank\">'
                 . '<span class=\"glyphicon glyphicon-download-alt\"></span></a>';
