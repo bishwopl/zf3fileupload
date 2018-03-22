@@ -1,5 +1,8 @@
 <?php
 namespace Zf3FileUpload;
+
+use Ramsey\Uuid\Doctrine\UuidType;
+
 return [
     'doctrine' => [
         'driver' => [
@@ -11,6 +14,13 @@ return [
             'orm_default' => [
                 'drivers' => [
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
+                ],
+            ],
+        ],
+    	'configuration' => [
+            'orm_default' => [
+                'types' => [
+                    UuidType::NAME => UuidType::class,
                 ],
             ],
         ],
