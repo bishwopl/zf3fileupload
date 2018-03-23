@@ -1,3 +1,5 @@
+(Not ready for production)
+
 # zf3fileupload
 Custom file upload element for zf3, supports filesystem and database storage(using DoctrineORM)
 
