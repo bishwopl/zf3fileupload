@@ -1,24 +1,24 @@
 <?php
+
 namespace Zf3FileUpload\Service;
 
 use Zend\Session\Container;
 use Zend\InputFilter;
 use Zf3FileUpload\Form\BaseUploadForm;
-use Zf3FileUpload\Storage\StorageInterface;
 use Zf3FileUpload\ModuleOptions\ModuleOptions;
 
-class FileUploadService{
-    
+class FileUploadService {
+
     /**
      * @var \Zf3FileUpload\ModuleOptions\ModuleOptions
      */
     protected $moduleOptions;
-    
+
     /**
      * @var \Zf3FileUpload\Storage\StorageInterface 
      */
     protected $storageAdapter;
-    
+
     /**
      * @var type 
      */
@@ -31,116 +31,114 @@ class FileUploadService{
 
     public function __construct(
             $adapters,
-            $serviceLocator, 
+            $serviceLocator,
             ModuleOptions $moduleOptions
     ) {
-        $this->adapters       = $adapters;
+        $this->adapters = $adapters;
         $this->serviceLocator = $serviceLocator;
-        $this->moduleOptions  = $moduleOptions;
+        $this->moduleOptions = $moduleOptions;
     }
-    
-    public function getForm()
-    {
-        return new BaseUploadForm();
+
+    public function getForm() {
+        return new BaseUploadForm('test-file-upload-form-38975');
     }
-    
+
     /**
      * 
      * @return \Zf3FileUpload\Entity\FileEntityInterface
      */
-    public function getFileObject(){
-        $fileEntityname = '\\'.$this->moduleOptions->getEntity();
+    public function getFileObject() {
+        $fileEntityname = '\\' . $this->moduleOptions->getEntity();
         return new $fileEntityname();
     }
-    
-    public function getModuleOptions(){
+
+    public function getModuleOptions() {
         return $this->moduleOptions;
     }
 
-    public function getInutFilter($validators, $uploadName){
+    public function getInutFilter($validators, $uploadName) {
         $inputFilter = new InputFilter\InputFilter();
 
         $fileInput = new InputFilter\FileInput($uploadName);
         $fileInput->setRequired(true);
-        
-        $minSize = $validators['minSize']==''?false:$validators['minSize'];
-        $maxSize = $validators['maxSize']==''?false:$validators['maxSize'];
-        $allowedMime = $validators['allowedMime']==''?false:$validators['allowedMime'];
-        $allowedExtentions = $validators['allowedExtentions']==''?false:$validators['allowedExtentions'];
-        if(!array($allowedExtentions)){
+
+        $minSize = $validators['minSize'] == '' ? false : $validators['minSize'];
+        $maxSize = $validators['maxSize'] == '' ? false : $validators['maxSize'];
+        $allowedMime = $validators['allowedMime'] == '' ? false : $validators['allowedMime'];
+        $allowedExtentions = $validators['allowedExtentions'] == '' ? false : $validators['allowedExtentions'];
+        if (!array($allowedExtentions)) {
             $allowedExtentions = explode(',', $allowedExtentions);
         }
-        if($minSize!==false){
+        if ($minSize !== false) {
             $fileInput->getValidatorChain()->attachByName('filesize', array('min' => $minSize));
         }
-        
-        if($maxSize!==false){
+
+        if ($maxSize !== false) {
             $fileInput->getValidatorChain()->attachByName('filesize', array('max' => $maxSize));
         }
-        
-        if($allowedMime!==false){
+
+        if ($allowedMime !== false) {
             $fileInput->getValidatorChain()->attachByName('filemimetype', array('mimeType' => $allowedMime));
         }
-        
-        if($allowedExtentions!==false){
-            $extensionvalidator = new \Zend\Validator\File\Extension(array('extension'=>$allowedExtentions));
+
+        if ($allowedExtentions !== false) {
+            $extensionvalidator = new \Zend\Validator\File\Extension(array('extension' => $allowedExtentions));
             $fileInput->getValidatorChain()->attach($extensionvalidator);
         }
-        
-        if(isset($validators['image'])){
+
+        if (isset($validators['image'])) {
             $imgValidator = $validators['image'];
-            
-            $minWidth = isset($imgValidator['minWidth'])?$imgValidator['minWidth']:false;
-            $minHeight = isset($imgValidator['minHeight'])?$imgValidator['minHeight']:false;
-            
-            $maxWidth = isset($imgValidator['maxWidth'])?$imgValidator['maxWidth']:false;
-            $maxHeight = isset($imgValidator['maxHeight'])?$imgValidator['maxHeight']:false;
-            
-            
-            if($minWidth!==false && $minHeight!==false){
-                $fileInput->getValidatorChain()->attachByName('fileimagesize', 
-                array('minWidth' => $minWidth, 'minHeight' => $minHeight));
+
+            $minWidth = isset($imgValidator['minWidth']) ? $imgValidator['minWidth'] : false;
+            $minHeight = isset($imgValidator['minHeight']) ? $imgValidator['minHeight'] : false;
+
+            $maxWidth = isset($imgValidator['maxWidth']) ? $imgValidator['maxWidth'] : false;
+            $maxHeight = isset($imgValidator['maxHeight']) ? $imgValidator['maxHeight'] : false;
+
+
+            if ($minWidth !== false && $minHeight !== false) {
+                $fileInput->getValidatorChain()->attachByName('fileimagesize',
+                        array('minWidth' => $minWidth, 'minHeight' => $minHeight));
             }
-            
-            if($minWidth!==false && $minHeight!==false){
-                $fileInput->getValidatorChain()->attachByName('fileimagesize', 
-                array('maxWidth' => $maxWidth, 'maxHeight' => $maxHeight));
+
+            if ($minWidth !== false && $minHeight !== false) {
+                $fileInput->getValidatorChain()->attachByName('fileimagesize',
+                        array('maxWidth' => $maxWidth, 'maxHeight' => $maxHeight));
             }
         }
-        
+
         $inputFilter->add($fileInput);
         return $inputFilter;
-    } 
-    
-    public function cropImage($cropDim, $files){
-        if(!is_array($cropDim) || !is_array($files)){
+    }
+
+    public function cropImage($cropDim, $files) {
+        if (!is_array($cropDim) || !is_array($files)) {
             return;
         }
-        
-        $width = isset($cropDim['width'])?$cropDim['width']:1;
-        $height = isset($cropDim['height'])?$cropDim['height']:NULL;
-        
-        foreach($files as $f){
-            if(!file_exists($f)){
+
+        $width = isset($cropDim['width']) ? $cropDim['width'] : 1;
+        $height = isset($cropDim['height']) ? $cropDim['height'] : NULL;
+
+        foreach ($files as $f) {
+            if (!file_exists($f)) {
                 continue;
             }
             $thumb = new \PHPThumb\GD($f);
-            if($height==NULL || $height==0){
+            if ($height == NULL || $height == 0) {
                 $thumb->adaptiveResize($width, NULL);
-            }
-            else{
+            } else {
                 $thumb->adaptiveResize($width, $height);
             }
             $thumb->save($f);
         }
     }
 
-    public function removePreviousUploads($atributes,$uploadName){
+    public function removePreviousUploads($atributes, $uploadName) {
         $this->getAppropriateAdapter($uploadName);
         $sessionSuccess = new Container('FormUploadSuccessContainer');
-        if($atributes['replacePrevious']==TRUE || $atributes['multiple']=FALSE){
+        if ($atributes['replacePrevious'] == TRUE || $atributes['multiple'] = FALSE) {
             $files = $sessionSuccess->offsetGet($uploadName);
-            foreach ($files as $filePath=>$fileUuid){
+            foreach ($files as $filePath => $fileUuid) {
                 $this->storageAdapter->remove($fileUuid, $filePath);
                 unset($files[$fileUuid]);
             }
@@ -149,40 +147,59 @@ class FileUploadService{
         return;
     }
 
-    public function callBack($callBack, $uploadedFileNames){
-        if(!is_array($callBack)){
+    public function createDestinationDirectory($pathname) {
+        if (is_dir($pathname) || empty($pathname)) {
+            return true;
+        }
+        // Ensure a file does not already exist with the same name
+        $pathname = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $pathname);
+        if (is_file($pathname)) {
+            trigger_error('mkdirr() File exists', E_USER_WARNING);
+            return false;
+        }
+        // Crawl up the directory tree
+        $next_pathname = substr($pathname, 0, strrpos($pathname, DIRECTORY_SEPARATOR));
+        if ($this->createDestinationDirectory($next_pathname)) {
+            if (!file_exists($pathname)) {
+                return mkdir($pathname);
+            }
+        }
+        return false;
+    }
+
+    public function callBack($callBack, $uploadedFileNames) {
+        if (!is_array($callBack)) {
             return;
         }
         $count = 0;
-        foreach($callBack as $c){
-            if(isset($c['object'])&&isset($c['function'])&&isset($c['parameter'])){
+        foreach ($callBack as $c) {
+            if (isset($c['object']) && isset($c['function']) && isset($c['parameter'])) {
                 //echo 'sdfjsdf';
                 $object = $c['object'];
-                $object = !is_object($object)?$object = $this->serviceLocator->get($object):$object;
+                $object = !is_object($object) ? $object = $this->serviceLocator->get($object) : $object;
                 $function = $c['function'];
-                $parameter = $count==0?$uploadedFileNames:$parameter = $c['parameter'];
+                $parameter = $count == 0 ? $uploadedFileNames : $parameter = $c['parameter'];
                 $count++;
-                call_user_func(array($object,$function),$parameter);
-            }
-            else{
+                call_user_func(array($object, $function), $parameter);
+            } else {
                 //echo 'Not Properly Configured';
             }
         }
     }
-    
+
     /**
      * 
      * @param type $filePath
      * @param type $attributes
      * @return \Zf3FileUpload\Entity\FileEntityInterface
      */
-    public function storeFile($filePath, $attributes, $uploadName){
+    public function storeFile($filePath, $attributes, $uploadName) {
         $this->getAppropriateAdapter($uploadName);
         $fileObj = $this->storageAdapter->store($filePath, $attributes);
-        if($fileObj instanceof \Zf3FileUpload\Entity\FileEntityInterface){
+        if ($fileObj instanceof \Zf3FileUpload\Entity\FileEntityInterface) {
             $sessionSuccess = new Container('FormUploadSuccessContainer');
             $previousUploads = [];
-            if($sessionSuccess->offsetExists($uploadName)){
+            if ($sessionSuccess->offsetExists($uploadName)) {
                 $previousUploads = $sessionSuccess->$uploadName;
             }
             $previousUploads[$fileObj->getName()] = $fileObj->getId();
@@ -190,8 +207,8 @@ class FileUploadService{
         }
         return;
     }
-    
-    public function getFileObjectListFromUploadName($uploadName){
+
+    public function getFileObjectListFromUploadName($uploadName) {
         $this->getAppropriateAdapter($uploadName);
         return $this->storageAdapter->fetchAllFromUploadName($uploadName);
     }
@@ -201,60 +218,59 @@ class FileUploadService{
      * @param string $path
      * @return \Zf3FileUpload\Entity\FileEntityInterface
      */
-    public function getFileObjectFromPath($uploadName, $path){
+    public function getFileObjectFromPath($uploadName, $path) {
         $this->getAppropriateAdapter($uploadName);
         $obj = $this->storageAdapter->createFileObjectFromPath($path);
-        if(!($obj instanceof \Zf3FileUpload\Entity\FileEntityInterface)){
-            $obj = $this->storageAdapter->fetchObjectFromUploadNameandFileId('',$path);
+        if (!($obj instanceof \Zf3FileUpload\Entity\FileEntityInterface)) {
+            $obj = $this->storageAdapter->fetchObjectFromUploadNameandFileId('', $path);
         }
         return $obj;
     }
-    
-    public function getFileObjectFromUploadNameAndFileName($uploadName, $fileId){
+
+    public function getFileObjectFromUploadNameAndFileName($uploadName, $fileId) {
         $this->getAppropriateAdapter($uploadName);
         return $fileObject = $this->storageAdapter->fetchObjectFromUploadNameandFileId($uploadName, $fileId);
     }
-    
-    public function removeFileFromUploadNameAndFileId($uploadName, $fileId){
+
+    public function removeFileFromUploadNameAndFileId($uploadName, $fileId) {
         $this->getAppropriateAdapter($uploadName);
         $sessionSuccess = new Container('FormUploadSuccessContainer');
         $session = new Container('FormUploadFormContainer');
         $atributes = $session->offsetGet($uploadName);
-        
-        if($atributes['enableRemove']!==TRUE){
+
+        if ($atributes['enableRemove'] !== TRUE) {
             return;
         }
-        
-        if($sessionSuccess->offsetExists($uploadName)){
+
+        if ($sessionSuccess->offsetExists($uploadName)) {
             $files = $sessionSuccess->$uploadName;
         }
-        
+
         $remaining = [];
-        
-        foreach($files as $filePath=>$fileUuid){
-            
-            if($fileId == $fileUuid.''){
-                
+
+        foreach ($files as $filePath => $fileUuid) {
+
+            if ($fileId == $fileUuid . '') {
+
                 $res = $this->storageAdapter->remove($fileUuid, $filePath);
-            }
-            else{
+            } else {
                 $remaining[$filePath] = $fileUuid;
             }
         }
-        
+
         $sessionSuccess->$uploadName = $remaining;
     }
-    
-    private function getAppropriateAdapter($uploadName){
+
+    private function getAppropriateAdapter($uploadName) {
         $session = new Container('FormUploadFormContainer');
         $atributes = $session->offsetGet($uploadName);
         $adapter_keys = array_keys($this->adapters);
-        
-        if(isset($atributes['storage']) && in_array($atributes['storage'], $adapter_keys)){
+
+        if (isset($atributes['storage']) && in_array($atributes['storage'], $adapter_keys)) {
             $this->storageAdapter = $this->adapters[$atributes['storage']];
-        }
-        else{
+        } else {
             $this->storageAdapter = $this->adapters['filesystem'];
         }
     }
+
 }

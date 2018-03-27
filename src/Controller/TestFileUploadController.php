@@ -32,27 +32,22 @@ class TestFileUploadController extends AbstractActionController
      */
     protected $myForm;
 
-    protected $translator;
-
     public function __construct(ModuleOptions $options, 
             FileUploadService $fileUploadService, 
             ObjectManager $em, 
-            MyForm $form,
-            $translator)
+            MyForm $form)
     {
         $this->options           = $options;
         $this->fileUploadService = $fileUploadService;
         $this->objectManager     = $em;
         $this->myForm            = $form;
-        $this->translator        = $translator;
     }
     
     public function indexAction()
     {
-        $this->myForm->setData(['start_date'=>'bf5be548-2992-42d7-9dcc-68e6803f6760']);
+        //$this->myForm->setData(['start_date'=>'bf5be548-2992-42d7-9dcc-68e6803f6760']);
         //$this->myForm->setData(['start_date'=>'data/UserData/8eacf5de-81b1-41bf-aa9a-44e22ac3262c.png']);
         $vm = new ViewModel();
-        $vm->setTemplate("mis-base/form-compact");
         $vm->setVariable("form", $this->myForm);
         
         if($this->getRequest()->isPost()){

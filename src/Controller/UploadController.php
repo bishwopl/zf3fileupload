@@ -61,6 +61,10 @@ class UploadController extends AbstractActionController
             return $vm;
         }
         
+        if(!is_dir($uploadDir)){
+            $this->uploadService->createDestinationDirectory($uploadDir);
+        }
+        
         $uploadObj = new \Zend\File\Transfer\Adapter\Http(); 
         $uploadObj->setDestination($uploadDir);
         

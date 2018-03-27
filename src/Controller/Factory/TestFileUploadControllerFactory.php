@@ -13,7 +13,6 @@ class TestFileUploadControllerFactory implements FactoryInterface
         $em                = $container->get('doctrine.entitymanager.orm_default');
         $moduleOptions     = $container->get(\Zf3FileUpload\ModuleOptions\ModuleOptions::class);
         $fileUploadService = $container->get(\Zf3FileUpload\Service\FileUploadService::class);
-        $translator        = $container->get('translator');
         $formManager       = $container->get('FormElementManager');
         $myform            = $formManager->get(MyForm::class);
         $requestedNameAbs = '\\'.$requestedName;
@@ -21,8 +20,7 @@ class TestFileUploadControllerFactory implements FactoryInterface
             $moduleOptions, 
             $fileUploadService, 
             $em, 
-            $myform, 
-            $translator
+            $myform
         );
     }
 }

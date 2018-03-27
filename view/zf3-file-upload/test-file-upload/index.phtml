@@ -1,0 +1,56 @@
+<?php
+
+/**
+ * @author Bishwo Prasad Lamichhane <bishwo.prasad@gmail.com>
+ * Generalized form renderer
+ */
+
+$form = $this->form;
+$elements = [];
+$filters = [];
+$filters['__form'] = method_exists($form, 'getInputFilterSpecification') ? $form->getInputFilterSpecification() : [];
+foreach ($form as $f) {
+    if ($f instanceof \Zend\Form\Fieldset) {
+        foreach ($f as $elem) {
+            $elements[$f->getName()][] = $elem->getName();
+        }
+        $filters[$f->getName()] = $f->getInputFilterSpecification();
+    } else {
+        $elements['__form'][] = $f->getName();
+    }
+}
+$form->prepare();
+        
+$form->setAttribute('action', $this->url('fileUpload/test'));
+$form->setAttribute('method', 'POST');
+
+echo $this->form()->openTag($form);
+foreach ($elements as $key => $formElements) {
+    foreach ($formElements as $elem) {
+        $parent = $key == '__form' ? $form : $form->get($key);
+        $filterSpec = $filters[$key];
+        ?>
+        <div class="form-group">
+            <label for="<?php echo $parent->get($elem)->getName(); ?>" class="col-md-2 control-label">
+                <?php echo ($parent->get($elem)->getLabel()); ?>
+                <?php
+                if (isset($filterSpec[$elem]) && isset($filterSpec[$elem]['required']) && $filterSpec[$elem]['required'] == true) {
+                    echo '<span style="color: #FF3300;">*</span>';
+                }
+                ?>
+            </label>
+            <div class="col-md-10">
+                <?php echo ($this->formElement($parent->get($elem))); ?>
+                <?php if ($this->formElementErrors($parent->get($elem))): ?>
+                    <div class="alert alert-danger alert-dismissable">
+                        <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+                        <?php echo $this->formElementErrors($parent->get($elem)); ?>    
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+        <?php
+    }
+}
+echo $this->form()->closeTag($form);
+

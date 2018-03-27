@@ -12,9 +12,6 @@ class MyForm extends Form
 {
     public function __construct($name = null)
     {
-        $this->setAttribute('action', '/fileupload/test');
-        $this->setAttribute('method', 'POST');
-        
         parent::__construct($name);
     }
     public function init()
@@ -25,7 +22,7 @@ class MyForm extends Form
             'attributes' => [
                 'formUniqueId'      => 'photo_',
                 'id'                => 'photoPathId',
-                'storage'           => 'db', // 'filesystem' or 'db
+                'storage'           => 'filesystem', // 'filesystem' or 'db
                 'showProgress'      => TRUE,
                 'multiple'          => FALSE,
                 'enableRemove'      => TRUE,
