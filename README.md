@@ -4,7 +4,7 @@
 Custom file upload element for zf3, supports filesystem and database storage(using DoctrineORM)
 
 # Requirements
-* php: ^5.6 || ^7.0,
+* [php: ^5.6 || ^7.0](http://php.net/)
 * [zendframework/zend-cache: ^2.7.1](https://github.com/zendframework/zend-cache)
 * [zendframework/zend-mvc-form: ^1.0](https://github.com/zendframework/zend-mvc-form)
 * [zendframework/zend-mvc-plugins: ^1.0.1](https://github.com/zendframework/zend-mvc-plugins)
