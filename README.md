@@ -41,7 +41,7 @@ Custom file upload element for zf3, supports filesystem and database storage(usi
                 'successText'       => 'Change Photo',
                 'errorText'         => 'Try Again',
                 'uploadingText'     => 'Uploading Photo...',
-                'replacePrevious'   => true,
+                'replacePrevious'   => TRUE,
                 'randomizeName'     => TRUE,
                 'showPreview'       => TRUE,
                 'validator' => [ 
