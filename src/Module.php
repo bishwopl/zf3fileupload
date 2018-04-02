@@ -91,7 +91,7 @@ AutoloaderProviderInterface, ConfigProviderInterface, ServiceProviderInterface, 
     public function onBootstrap($e) {
         $sm = $e->getApplication()->getServiceManager();
         $headScript = $sm->get('ViewHelperManager')->get('headScript');
-        $headScript->appendScript(file_get_contents(__DIR__.'\Assets\jquery.form.min.js'), 'text/javascript');
+        $headScript->appendScript(file_get_contents(__DIR__.'/Assets/jquery.form.min.js'), 'text/javascript');
     }
 
 }
