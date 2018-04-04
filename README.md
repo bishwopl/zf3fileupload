@@ -23,7 +23,7 @@ Custom file upload element for zf3, supports filesystem and database storage(usi
     public function init()
     {
         $this->add([
-            'type' => \Zf3FileUpload\Form\Element\Fileupload::class,
+            'type' => 'fileupload',
             'name' => 'start_date',
             'attributes' => [
                 'formUniqueId'      => 'photo_',

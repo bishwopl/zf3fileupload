@@ -1,45 +1,21 @@
 <?php
 namespace Zf3FileUpload\Controller;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-
-use Zf3FileUpload\Service\FileUploadService;
-use Zf3FileUpload\ModuleOptions\ModuleOptions;
 
 use Zf3FileUpload\Form\MyForm;
 
 class TestFileUploadController extends AbstractActionController
 {
-    /**
-     * @var \Doctrine\Common\Persistence\ObjectManager
-     */
-    protected $objectManager;
-    
-    /**
-     * @var \Zf3FileUpload\Service\FileUploadService
-     */
-    protected $fileUploadService;
-    
-    /**
-     * @var \Zf3FileUpload\ModuleOptions\ModuleOptions
-     */
-    protected $options;
-    
+   
     /**
      * @var \Zf3FileUpload\Form\MyForm
      */
     protected $myForm;
 
-    public function __construct(ModuleOptions $options, 
-            FileUploadService $fileUploadService, 
-            ObjectManager $em, 
-            MyForm $form)
+    public function __construct(MyForm $form)
     {
-        $this->options           = $options;
-        $this->fileUploadService = $fileUploadService;
-        $this->objectManager     = $em;
         $this->myForm            = $form;
     }
     

@@ -138,6 +138,9 @@ class FileUploadService {
         $sessionSuccess = new Container('FormUploadSuccessContainer');
         if ($atributes['replacePrevious'] == TRUE || $atributes['multiple'] = FALSE) {
             $files = $sessionSuccess->offsetGet($uploadName);
+            if(!is_array($files)){
+                $files = [];
+            }
             foreach ($files as $filePath => $fileUuid) {
                 $this->storageAdapter->remove($fileUuid, $filePath);
                 unset($files[$fileUuid]);
