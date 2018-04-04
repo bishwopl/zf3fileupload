@@ -10,18 +10,10 @@ class TestFileUploadControllerFactory implements FactoryInterface
 {   
     public function __invoke(ContainerInterface $container, $requestedName, Array $options = null)
     {
-        $em                = $container->get('doctrine.entitymanager.orm_default');
-        $moduleOptions     = $container->get(\Zf3FileUpload\ModuleOptions\ModuleOptions::class);
-        $fileUploadService = $container->get(\Zf3FileUpload\Service\FileUploadService::class);
         $formManager       = $container->get('FormElementManager');
         $myform            = $formManager->get(MyForm::class);
         $requestedNameAbs = '\\'.$requestedName;
-        return new $requestedNameAbs(
-            $moduleOptions, 
-            $fileUploadService, 
-            $em, 
-            $myform
-        );
+        return new $requestedNameAbs($myform);
     }
 }
 

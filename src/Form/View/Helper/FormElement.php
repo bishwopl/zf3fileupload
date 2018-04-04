@@ -5,7 +5,7 @@ use Zf3FileUpload\Form\Element;
 use Zend\Form\View\Helper\FormElement as BaseFormElement;
 use Zend\Form\ElementInterface;
   
-class FormElement  extends BaseFormElement
+class FormElement extends BaseFormElement
 {
     public function render(ElementInterface $element)
     {
