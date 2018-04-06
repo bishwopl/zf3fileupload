@@ -143,7 +143,7 @@ class FileUploadService {
             }
             foreach ($files as $filePath => $fileUuid) {
                 $this->storageAdapter->remove($fileUuid, $filePath);
-                unset($files[$fileUuid]);
+                unset($files[$filePath]);
             }
             $sessionSuccess->$uploadName = $files;
         }
