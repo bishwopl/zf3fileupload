@@ -231,7 +231,13 @@ class FormFileUpload extends AbstractHelper {
                 }
                 $imgs .= '<img src=\'data:image/png;base64,'.base64_encode($content).'\' '
                         . ' height=\"'.$previewHeight.'\" width=\"'.$previewWidth.'\"/>';
-                $names[] = $f->getId();
+             
+                if(is_file($f->getName())){
+                    $names[] = $f->getName();
+                }
+                else{
+                    $names[] = $f->getId();
+                }
             }
             $response.=''
             . '<script type="text/javascript">'
