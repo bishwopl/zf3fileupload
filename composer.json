@@ -20,7 +20,7 @@
         "zendframework/zend-session": "^2",
         "zendframework/zend-servicemanager-di": "^1",
         "zendframework/zend-file": "^2",
-        "doctrine/doctrine-orm-module": "^1 || 2^",
+        "doctrine/doctrine-orm-module": "^1 || ^2.1",
         "ramsey/uuid": "^3",
         "ramsey/uuid-doctrine": "^1",
         "masterexploder/phpthumb": "^2"
