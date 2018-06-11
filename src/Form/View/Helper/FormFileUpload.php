@@ -157,7 +157,8 @@ class FormFileUpload extends AbstractHelper {
                         . '$(newDivName).html(\'<div class="alert alert-warning" style="margin-top:.5em;">'
                         . 'Removing Please wait...'
                         . '</div>\');'                        
-                        .'$(newDivName).load(url);'
+                        . '$(newDivName).load(url);'
+                        . '$("#'.$responseDivId.'").html("");'
                     . '}'
                 . '</script>'
                 . '';
