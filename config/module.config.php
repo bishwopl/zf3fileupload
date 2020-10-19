@@ -3,7 +3,7 @@
 namespace Zf3FileUpload;
 
 use Ramsey\Uuid\Doctrine\UuidType;
-use Zend\ServiceManager\Factory\InvokableFactory;
+use Laminas\ServiceManager\Factory\InvokableFactory;
 
 return [
     'doctrine' => [
@@ -11,7 +11,9 @@ return [
             __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
-                'paths' => __DIR__ . '/../src/' . '/Entity',
+                'paths' => [
+                    __DIR__ . '/../src/' . '/Entity',
+                ],
             ],
             'orm_default' => [
                 'drivers' => [

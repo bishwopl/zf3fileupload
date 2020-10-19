@@ -1,8 +1,8 @@
 <?php
 namespace Zf3FileUpload\ModuleOptions\Factory;
 
-use Zend\ServiceManager\Factory\FactoryInterface;
-use Interop\Container\ContainerInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
+use Psr\Container\ContainerInterface;
 
 use Zf3FileUpload\ModuleOptions\ModuleOptions;
 

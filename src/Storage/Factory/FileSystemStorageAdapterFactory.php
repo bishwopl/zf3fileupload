@@ -7,8 +7,8 @@
 
 namespace Zf3FileUpload\Storage\Factory;
 
-use Zend\ServiceManager\Factory\FactoryInterface;
-use Interop\Container\ContainerInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
+use Psr\Container\ContainerInterface;
 
 use Zf3FileUpload\Storage\FileSystemStorageAdapter;
 

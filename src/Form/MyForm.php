@@ -6,7 +6,7 @@
  */
 namespace Zf3FileUpload\Form;
 
-use Zend\Form\Form;
+use Laminas\Form\Form;
 
 class MyForm extends Form
 {
@@ -27,9 +27,9 @@ class MyForm extends Form
                 'multiple'          => FALSE,
                 'enableRemove'      => TRUE,
                 'uploadDir'         => 'data/UserData/',
-                'icon'              => 'fa fa-upload',
-                'successIcon'       => 'fa fa-pencil',
-                'errorIcon'         => 'fa fa-remove',
+                'icon'              => 'fas fa-upload',
+                'successIcon'       => 'fas fa-edit',
+                'errorIcon'         => 'fas fa-remove',
                 'class'             => 'btn btn-default',
                 'uploadText'        => 'Upload Photo',
                 'successText'       => 'Change Photo',

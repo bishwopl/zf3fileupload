@@ -74,16 +74,16 @@
             $downloadLink = '<a title=\"Get Attachment\" href=\"'
                 . $this->url('fileUpload/getUpload' , array('uploadname' => $this->uploadName,'filename'=>$f->getid())).'\" '
                 . 'target=\"_blank\">'
-                . '<span class=\"glyphicon glyphicon-download-alt\"></span></a>';
+                . '<span class=\"fas fa-download\"></span></a>';
             
             $removeLink = '<span style=\"color: #bb0000; cursor: pointer;\" title=\"Remove Attachment\" '
-                . 'class=\"glyphicon glyphicon-trash\" '
+                . 'class=\"fas fa-trash\" '
                 . 'onclick=\"removeUpload(\''.$this->uploadName.'\',\''.$f->getId().'\',\''.$this->downloadDiv.'\')\">'
                 . '</span>';
             $download .= '<tr>';
                 $download .= '<td><span style=\"color: #00bb00; cursor: pointer;\" '
                     . 'title=\"Upload Successful\" '
-                    . 'class=\"glyphicon glyphicon-ok\"'
+                    . 'class=\"fas fa-check-circle\"'
                     . '</span></td>';
                 $download .= '<td><small>'. $formatter->resizeName(basename($f->getName())).'</small></td>';
                 $download .= '<td><small>'.$formatter->sizeFormat($f->getSize()).'</small></td>';

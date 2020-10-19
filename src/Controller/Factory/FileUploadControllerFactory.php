@@ -1,7 +1,7 @@
 <?php
 namespace Zf3FileUpload\Controller\Factory;
 
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 
 class FileUploadControllerFactory implements FactoryInterface

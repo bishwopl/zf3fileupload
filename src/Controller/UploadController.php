@@ -1,9 +1,9 @@
 <?php
 namespace Zf3FileUpload\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
-use Zend\Session\Container;
+use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\View\Model\ViewModel;
+use Laminas\Session\Container;
 
 use Zf3FileUpload\Service\FileUploadService;
 class UploadController extends AbstractActionController
@@ -65,7 +65,7 @@ class UploadController extends AbstractActionController
             $this->uploadService->createDestinationDirectory($uploadDir);
         }
         
-        $uploadObj = new \Zend\File\Transfer\Adapter\Http(); 
+        $uploadObj = new \Laminas\File\Transfer\Adapter\Http(); 
         $uploadObj->setDestination($uploadDir);
         
         if($uploadObj->receive()){

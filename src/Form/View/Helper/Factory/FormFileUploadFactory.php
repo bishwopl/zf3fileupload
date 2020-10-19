@@ -1,7 +1,7 @@
 <?php
 namespace Zf3FileUpload\Form\View\Helper\Factory;
 
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 
 use Zf3FileUpload\Form\View\Helper\FormFileUpload;

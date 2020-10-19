@@ -2,8 +2,8 @@
 
 namespace Zf3FileUpload\Service;
 
-use Zend\Session\Container;
-use Zend\InputFilter;
+use Laminas\Session\Container;
+use Laminas\InputFilter;
 use Zf3FileUpload\Form\BaseUploadForm;
 use Zf3FileUpload\ModuleOptions\ModuleOptions;
 
@@ -82,7 +82,7 @@ class FileUploadService {
         }
 
         if ($allowedExtentions !== false) {
-            $extensionvalidator = new \Zend\Validator\File\Extension(array('extension' => $allowedExtentions));
+            $extensionvalidator = new \Laminas\Validator\File\Extension(array('extension' => $allowedExtentions));
             $fileInput->getValidatorChain()->attach($extensionvalidator);
         }
 
@@ -123,7 +123,7 @@ class FileUploadService {
             if (!file_exists($f)) {
                 continue;
             }
-            $thumb = new \PHPThumb\GD($f);
+            $thumb = new \Zf3FileUpload\MyThumb($f);
             if ($height == NULL || $height == 0) {
                 $thumb->adaptiveResize($width, NULL);
             } else {

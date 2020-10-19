@@ -8,7 +8,7 @@
 namespace Zf3FileUpload\Storage;
 
 use Zf3FileUpload\Entity\FileEntityInterface;
-use Zend\Session\Container;
+use Laminas\Session\Container;
 
 class FileSystemStorageAdapter implements StorageInterface{
     

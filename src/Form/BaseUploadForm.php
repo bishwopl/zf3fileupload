@@ -1,7 +1,7 @@
 <?php
 namespace Zf3FileUpload\Form;
  
-use Zend\Form\Form;
+use Laminas\Form\Form;
  
 class BaseUploadForm extends Form
 {

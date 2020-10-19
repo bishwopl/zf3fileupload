@@ -6,10 +6,10 @@
  */
 namespace Zf3FileUpload\Form\Element;
 
-use Zend\Filter;
-use Zend\Form\Element;
-use Zend\InputFilter\InputProviderInterface;
-use Zend\Validator\Regex as RegexValidator;
+use Laminas\Filter;
+use Laminas\Form\Element;
+use Laminas\InputFilter\InputProviderInterface;
+use Laminas\Validator\Regex as RegexValidator;
 
 class FileUpload extends Element implements InputProviderInterface
 {

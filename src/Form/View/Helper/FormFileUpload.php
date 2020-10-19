@@ -1,9 +1,9 @@
 <?php
 namespace Zf3FileUpload\Form\View\Helper;
 
-use Zend\Form\View\Helper\AbstractHelper;
-use Zend\Form\ElementInterface;
-use Zend\Session\Container;
+use Laminas\Form\View\Helper\AbstractHelper;
+use Laminas\Form\ElementInterface;
+use Laminas\Session\Container;
 use Zf3FileUpload\Service\FileUploadService;
  
 class FormFileUpload extends AbstractHelper {
@@ -18,7 +18,7 @@ class FormFileUpload extends AbstractHelper {
     
     public function __construct(FileUploadService $uploadService) {
         $this->uploadService = $uploadService;
-        $vm                   = new \Zend\Http\PhpEnvironment\Request();
+        $vm                   = new \Laminas\Http\PhpEnvironment\Request();
         $this->basepath       = $vm->getBaseUrl();
     }
 
@@ -260,17 +260,17 @@ class FormFileUpload extends AbstractHelper {
             $downloadLink = '<a title=\"Get Attachment\" href=\"'
                 .$this->basepath.'/fileupload/get-uploaded-file/'.$uploadName.'/'.$f->getId().'\" '
                 . 'target=\"_blank\">'
-                . '<span class=\"glyphicon glyphicon-download-alt\"></span></a>';
+                . '<span class=\"fas fa-download\"></span></a>';
             $removeLink = '<span style=\"color: #bb0000; cursor: pointer;\" '
                     . 'title=\"Remove Attachment\" '
-                    . 'class=\"glyphicon glyphicon-trash\" '
+                    . 'class=\"fas fa-trash\" '
                     . 'onclick=\"removeUpload(\''.$uploadName.'\',\''.$f->getId().'\',\''.$downloadDivId.'\')\">'
                     . '</span>';
 
             $download .= '<tr>';
                 $download .= '<td><span style=\"color: #00bb00; cursor: pointer;\" '
                     . 'title=\"Upload Successful\" '
-                    . 'class=\"glyphicon glyphicon-ok\"'
+                    . 'class=\"fas fa-check-circle\"'
                     . '</span></td>';
                 $download .= '<td><small>'.$this->resizeName(basename($f->getName())).'</small></td>';
                 $download .= '<td><small>'.$this->sizeFormat($f->getSize()).'</small></td>';

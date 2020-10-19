@@ -1,7 +1,7 @@
 <?php
 namespace Zf3FileUpload\ModuleOptions;
 
-use Zend\Stdlib\AbstractOptions;
+use Laminas\Stdlib\AbstractOptions;
 
 class ModuleOptions extends AbstractOptions{  
     protected $__strictMode__  = false;

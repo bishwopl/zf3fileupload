@@ -1,7 +1,7 @@
 <?php
 namespace Zf3FileUpload\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
+use Laminas\Mvc\Controller\AbstractActionController;
 
 use Zf3FileUpload\Service\FileUploadService;
 

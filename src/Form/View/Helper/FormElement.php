@@ -2,8 +2,8 @@
 namespace Zf3FileUpload\Form\View\Helper;
 
 use Zf3FileUpload\Form\Element;
-use Zend\Form\View\Helper\FormElement as BaseFormElement;
-use Zend\Form\ElementInterface;
+use Laminas\Form\View\Helper\FormElement as BaseFormElement;
+use Laminas\Form\ElementInterface;
   
 class FormElement extends BaseFormElement
 {

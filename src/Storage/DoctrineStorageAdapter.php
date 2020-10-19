@@ -10,7 +10,7 @@ namespace Zf3FileUpload\Storage;
 use Doctrine\Common\Persistence\ObjectManager;
 use Zf3FileUpload\Entity\FileEntityInterface;
 use Zf3FileUpload\Storage\StorageInterface;
-use Zend\Session\Container;
+use Laminas\Session\Container;
 
 class DoctrineStorageAdapter implements StorageInterface {
 
