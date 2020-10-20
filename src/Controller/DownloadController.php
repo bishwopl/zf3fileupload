@@ -27,8 +27,6 @@ class DownloadController extends AbstractActionController
         $fileObject = $this->uploadService->getFileObjectFromUploadNameAndFileName($uploadName, $fileName);
         
         if($fileObject instanceof \Zf3FileUpload\Entity\FileEntityInterface){
-            $mime = $fileObject->getMime();
-            $length = $fileObject->getSize();
             $content = $fileObject->getContent();
 
             if(!is_string($content)){
@@ -36,10 +34,10 @@ class DownloadController extends AbstractActionController
             }
             
             ob_clean();
-            header("Content-Type: $mime"); 
+            header("Content-Type: ".$fileObject->getMime()); 
             header("Expires: 0");
             header("Cache-Control: must-revalidate");
-            header("Content-Length: $length"); 
+            header("Content-Length: ".$fileObject->getSize()); 
             print_r(($content));
 
             exit;

@@ -69,7 +69,7 @@ class FormFileUpload extends AbstractHelper {
                 . 'title="'.$helpText.'" data-html="true" data-toggle="tooltip" data-placement="top"> '
                 . '<span class="'.$element->getAttribute('icon').'"></span> '
                 . $label
-                . '</button><div class="assassass" id="'.$downloadDiv.'"></div>'
+                . '</button><div class="download" id="'.$downloadDiv.'"></div>'
                 . '<div class="progress progress-striped active" id="'.$progressContainerId.'" style="display:none;">'
                 . '<div class="progress-bar text-center" id="'.$progressId.'" style="width: 0%">'
                 . '0%</div></div></div></div>'
@@ -221,6 +221,7 @@ class FormFileUpload extends AbstractHelper {
         $validators = $atributes['validator'];
         $downloadDivId = $uploadName.'_downloadDiv';
         $names = [];
+        $buttonId = $atributes['id']!==''?$atributes['id'].'__button':'upload__button';
 
         $fileObjects = $this->uploadService->getFileObjectListFromUploadName($uploadName);
         
@@ -285,10 +286,16 @@ class FormFileUpload extends AbstractHelper {
         }
         $download .= '</table>'; 
         if($total_files>0){
+            $successText = $atributes['successText']!==''?$atributes['successText']:'Change';
+            $successIcon = $atributes['successIcon']!==''?$atributes['successIcon']:'';
             $response.=''
             . '<script type="text/javascript">'
             . '$(document).ready(function(){'
                 . '$("#'.$downloadDivId.'").html("'.$download.'");'
+                . '$("#'.$buttonId.'").html(\''
+                . '<span class="'.$successIcon.'"></span> '
+                . $successText
+                . '\');'
             . '});'
             . '</script>'
             . '';
