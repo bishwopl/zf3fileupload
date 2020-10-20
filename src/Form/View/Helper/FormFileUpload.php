@@ -95,6 +95,7 @@ class FormFileUpload extends AbstractHelper {
                         . '$( "#'.$actualUploadButtonId.'" ).trigger( "click" );'
                     . '});'
                     . '$( document ).on( \'change\', \'#'.$actualUploadButtonId.'\', function() { '
+                        . '$(\'#upload-display-table\').hide();'
                         . '$(\'#'.$actualUploadformId.'\').ajaxForm({'
                             . 'beforeSubmit: function(arr, $form, options) {'
                                 . 'var isValid = true;'
@@ -134,12 +135,14 @@ class FormFileUpload extends AbstractHelper {
                                 . 'var percentVal = \'100%\';'
                                 . '$(\'#'.$progressId.'\').css(\'width\', percentVal);'
                                 . '$(\'#'.$progressId.'\').html(percentVal);'
+                                . '$(\'#upload-display-table\').show();'
                             . '},'
                             . 'complete: function(xhr) {'
                                 . '$(\'#'.$buttonId.'\').button(\'reset\');'
                                 . '$("#'.$progressContainerId.'").hide();'
                                 . '$("#'.$responseDivId.'").show();'
                                 . '$("#'.$responseDivId.'").html(xhr.responseText);'
+                                . '$(\'#upload-display-table\').show();'
                             . '}'
                         . '});'
                         . '$( "#'.$actualUploadformId.'" ).trigger("submit");'
@@ -252,7 +255,7 @@ class FormFileUpload extends AbstractHelper {
             . '';
         }
         
-        $download = '<table style=\"text-align:center;\" '
+        $download = '<table style=\"text-align:center;\" id=\"upload-display-table\"'
                 . 'class=\"table table-hover table-responsive table-stripped table-sm\">';
         $total_files = 0;
         foreach($fileObjects as $f){
