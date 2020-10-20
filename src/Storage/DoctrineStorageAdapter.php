@@ -11,6 +11,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Zf3FileUpload\Entity\FileEntityInterface;
 use Zf3FileUpload\Storage\StorageInterface;
 use Laminas\Session\Container;
+use Ramsey\Uuid\Uuid;
 
 class DoctrineStorageAdapter implements StorageInterface {
 
@@ -91,6 +92,7 @@ class DoctrineStorageAdapter implements StorageInterface {
             $fileObj->setMime($mime);
             $fileObj->setName($path);
             $fileObj->setSize(filesize($path));
+            $fileObj->setId(Uuid::fromString(Uuid::uuid4()));
             unlink($path);
         }
         return $fileObj;

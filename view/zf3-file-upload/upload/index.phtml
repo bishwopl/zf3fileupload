@@ -22,7 +22,8 @@
     }
     else{
         $imgs = '';
-        $fileNames = [];
+        $names = [];
+        $download = '';
         if($this->isImage==true&&$this->showPreview==true){
             $previewWidth  = $this->previewDim['width'];
             $previewHeight = $this->previewDim['height'];
@@ -33,15 +34,14 @@
                 }
                 $imgs .= '<img src=\'data:image/png;base64,'.base64_encode($content).'\' '
                         . ' height=\"'.$previewHeight.'\" width=\"'.$previewWidth.'\"/>';
-                if(is_file($f->getName())){
-                    $fileNames[] = $f->getName();
-                }
-                else{
-                    $fileNames[] = $f->getId();
-                }
             }
             
         }
+        
+        foreach($this->files as $f){
+            $names[] = is_file($f->getName())?$f->getName():$f->getId();
+        }
+        
         echo''
             . '<script type="text/javascript">'
                 . '$(document).ready(function(){'
@@ -53,7 +53,7 @@
         echo''
         . '<script type="text/javascript">'
             . '$(document).ready(function(){'
-                . '$("#'.$this->inputId.'").val(\''.implode(',',$fileNames).'\')'
+                . '$("#'.$this->inputId.'").val(\''.implode(',', $names).'\')'
             . '});'
         . '</script>'
         . '';
@@ -67,23 +67,24 @@
                 . '});'
             . '</script>'
             . '';
-        
-        $download = '<table style=\"text-align:center;\" '
-                . 'class=\"table table-hover table-responsive table-stripped table-bordered\">';  
+        if(sizeof($this->files)>0){
+            $download = '<table style=\"text-align:center;\" '
+                . 'class=\"table table-hover table-responsive table-stripped table-sm\">';  
+        }
         foreach($this->files as $f){
             $downloadLink = '<a title=\"Get Attachment\" href=\"'
                 . $this->url('fileUpload/getUpload' , array('uploadname' => $this->uploadName,'filename'=>$f->getid())).'\" '
                 . 'target=\"_blank\">'
-                . '<span class=\"fas fa-download\"></span></a>';
+                . '<span class=\"fas fa-download fa-xs\"></span></a>';
             
             $removeLink = '<span style=\"color: #bb0000; cursor: pointer;\" title=\"Remove Attachment\" '
-                . 'class=\"fas fa-trash\" '
+                . 'class=\"fas fa-trash fa-xs\" '
                 . 'onclick=\"removeUpload(\''.$this->uploadName.'\',\''.$f->getId().'\',\''.$this->downloadDiv.'\')\">'
                 . '</span>';
             $download .= '<tr>';
                 $download .= '<td><span style=\"color: #00bb00; cursor: pointer;\" '
                     . 'title=\"Upload Successful\" '
-                    . 'class=\"fas fa-check-circle\"'
+                    . 'class=\"fas fa-check-circle fa-xs\"'
                     . '</span></td>';
                 $download .= '<td><small>'. $formatter->resizeName(basename($f->getName())).'</small></td>';
                 $download .= '<td><small>'.$formatter->sizeFormat($f->getSize()).'</small></td>';
@@ -93,7 +94,9 @@
                 }
             $download .= '</tr>';
         }
-        $download .= '</table>';
+        if(sizeof($this->files)>0){ 
+            $download .= '</table>'; 
+        }
         
         echo''
         . '<script type="text/javascript">'

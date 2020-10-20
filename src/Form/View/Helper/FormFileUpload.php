@@ -61,7 +61,7 @@ class FormFileUpload extends AbstractHelper {
                 . 'Allowed Types : '.$validators['allowedExtentions'];
 
         return '<div class="row">'
-                . '<div class="col-sm-6">'
+                . '<div class="col-xs-6">'
                 . '<input type="hidden" name="'.$field_name.'" id="'.$uploadNameId.'">'
                 . '<div id="'.$previewDivId.'"></div>'
                 . '<button type="button" data-loading-text="'.$uploading.'" '
@@ -196,7 +196,7 @@ class FormFileUpload extends AbstractHelper {
         foreach ($fileObjs as $f){
             $savedFiles[$f->getName()] = $f->getId();
             
-            //this ensures name ad id of file remains same after edit so associaions are not broken
+            //this ensures name and id of file remains same after edit so associaions are not broken
             if($attributes['multiple']==FALSE){
                 $attributes['newName'] = $f->getName();
                 $attributes['newId'] = $f->getId();
@@ -217,14 +217,24 @@ class FormFileUpload extends AbstractHelper {
         $previewDivId = $uploadName.'previewDivId';
         $validators = $atributes['validator'];
         $downloadDivId = $uploadName.'_downloadDiv';
+        $names = [];
 
         $fileObjects = $this->uploadService->getFileObjectListFromUploadName($uploadName);
+        
+        foreach($fileObjects as $f){
+            $names[] = is_file($f->getName())?$f->getName():$f->getId();
+        }
+
+        $response.='<script type="text/javascript">'
+            . '$(document).ready(function(){'
+            . '$("#'.$uploadName.'_Id'.'").val(\''.implode(',',$names).'\');'
+            . '});'
+        . '</script>';
         
         if(isset($validators['image'])&&$atributes['showPreview']){
             $previewWidth  = $atributes['preview']['width'];
             $previewHeight = $atributes['preview']['height'];
             $imgs = '';
-            $names = [];
             foreach($fileObjects as $f){
                 $content = $f->getContent();
                 if(!is_string($content)){
@@ -232,13 +242,6 @@ class FormFileUpload extends AbstractHelper {
                 }
                 $imgs .= '<img src=\'data:image/png;base64,'.base64_encode($content).'\' '
                         . ' height=\"'.$previewHeight.'\" width=\"'.$previewWidth.'\"/>';
-             
-                if(is_file($f->getName())){
-                    $names[] = $f->getName();
-                }
-                else{
-                    $names[] = $f->getId();
-                }
             }
             $response.=''
             . '<script type="text/javascript">'
@@ -248,29 +251,25 @@ class FormFileUpload extends AbstractHelper {
             . '</script>'
             . '';
         }
-        $response.='<script type="text/javascript">'
-            . '$(document).ready(function(){'
-                . '$("#'.$uploadName.'_Id'.'").val(\''.implode(',',$names).'\')'
-            . '});'
-        . '</script>';
+        
         $download = '<table style=\"text-align:center;\" '
-                . 'class=\"table table-hover table-responsive table-stripped table-bordered\">';
+                . 'class=\"table table-hover table-responsive table-stripped table-sm\">';
         $total_files = 0;
         foreach($fileObjects as $f){
             $downloadLink = '<a title=\"Get Attachment\" href=\"'
                 .$this->basepath.'/fileupload/get-uploaded-file/'.$uploadName.'/'.$f->getId().'\" '
                 . 'target=\"_blank\">'
-                . '<span class=\"fas fa-download\"></span></a>';
+                . '<span class=\"fas fa-download fa-xs\"></span></a>';
             $removeLink = '<span style=\"color: #bb0000; cursor: pointer;\" '
                     . 'title=\"Remove Attachment\" '
-                    . 'class=\"fas fa-trash\" '
+                    . 'class=\"fas fa-trash fa-xs\" '
                     . 'onclick=\"removeUpload(\''.$uploadName.'\',\''.$f->getId().'\',\''.$downloadDivId.'\')\">'
                     . '</span>';
 
             $download .= '<tr>';
                 $download .= '<td><span style=\"color: #00bb00; cursor: pointer;\" '
                     . 'title=\"Upload Successful\" '
-                    . 'class=\"fas fa-check-circle\"'
+                    . 'class=\"fas fa-check-circle fa-xs\"'
                     . '</span></td>';
                 $download .= '<td><small>'.$this->resizeName(basename($f->getName())).'</small></td>';
                 $download .= '<td><small>'.$this->sizeFormat($f->getSize()).'</small></td>';
@@ -309,7 +308,7 @@ class FormFileUpload extends AbstractHelper {
     protected function resizeName($name){
         $ret = $name;
         if(strlen($name)>15){
-            $ret = substr($name, 0, 5).'...'.substr($name, -6);
+            $ret = substr($name, 0, 5).'...'.substr($name, -9);
         }
         return $ret;
     }

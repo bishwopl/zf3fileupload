@@ -13,11 +13,14 @@ class Module implements ConfigProviderInterface {
     public function onBootstrap($e) {
         $sm = $e->getApplication()->getServiceManager();
         
-        $inlineScript = $sm->get('ViewHelperManager')->get('inlineScript');
+        $viewManager = $sm->get('ViewHelperManager');
+        
+        $inlineScript = $viewManager->get('inlineScript');
         $inlineScript->appendScript(file_get_contents(__DIR__ . '/Assets/jquery.form.min.js'), 'text/javascript');
         
-        $headStyle = $sm->get('ViewHelperManager')->get('headStyle');
+        $headStyle = $viewManager->get('headStyle');
         $headStyle->appendStyle(file_get_contents(__DIR__ . '/Assets/font-awesome-all.min.css'));
+        
     }
 
 }

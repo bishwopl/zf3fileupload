@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * File
  *
- * @ORM\Table(name="file")
+ * @ORM\Table(name="zf3_fileupload_file")
  * @ORM\Entity
  */
 class File implements FileEntityInterface
