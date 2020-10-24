@@ -63,7 +63,7 @@ class MyForm extends Form
                     //[
                     //    'object'    => 'object',
                     //    'function'  => 'name of function to call',
-                    //    'parameter' => 'name(s) with full path of file(s) uploaded eparated with comma '
+                    //    'parameter' => 'name(s) with full path of file(s) uploaded separated with comma '
                     //]
                 ]
             ],

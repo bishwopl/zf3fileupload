@@ -39,8 +39,8 @@ class FileUploadService {
         $this->moduleOptions = $moduleOptions;
     }
 
-    public function getForm() {
-        return new BaseUploadForm('test-file-upload-form-38975');
+    public function getForm($uploadName) {
+        return new BaseUploadForm($uploadName);
     }
 
     /**

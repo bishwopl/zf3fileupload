@@ -23,7 +23,7 @@ class SizeFormatter{
     public function resizeName($name){
         $ret = $name;
         if(strlen($name)>15){
-            $ret = substr($name, 0, 5).'...'.substr($name, -6);
+            $ret = substr($name, 0, 5).'...'.substr($name, -9);
         }
         return $ret;
     }

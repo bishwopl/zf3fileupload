@@ -5,6 +5,7 @@ use Laminas\Form\View\Helper\AbstractHelper;
 use Laminas\Form\ElementInterface;
 use Laminas\Session\Container;
 use Zf3FileUpload\Service\FileUploadService;
+use Zf3FileUpload\SizeFormatter\SizeFormatter;
  
 class FormFileUpload extends AbstractHelper {
     
@@ -16,10 +17,14 @@ class FormFileUpload extends AbstractHelper {
      */
     protected $uploadService;
     
+    protected $sizeFormatter;
+
+
     public function __construct(FileUploadService $uploadService) {
         $this->uploadService = $uploadService;
         $vm                   = new \Laminas\Http\PhpEnvironment\Request();
         $this->basepath       = $vm->getBaseUrl();
+        $this->sizeFormatter = new SizeFormatter();
     }
 
     public function render(ElementInterface $element) {
@@ -275,7 +280,7 @@ class FormFileUpload extends AbstractHelper {
                     . 'title=\"Upload Successful\" '
                     . 'class=\"fas fa-check-circle fa-xs\"'
                     . '</span></td>';
-                $download .= '<td><small>'.$this->resizeName(basename($f->getName())).'</small></td>';
+                $download .= '<td><small>'.$this->sizeFormatter->resizeName(basename($f->getName())).'</small></td>';
                 $download .= '<td><small>'.$this->sizeFormat($f->getSize()).'</small></td>';
                 $download .= '<td>'.$downloadLink.'</td>';
                 if($atributes['enableRemove']==TRUE){
@@ -313,13 +318,5 @@ class FormFileUpload extends AbstractHelper {
         }
         $modified = round($size/(pow(1024,($i))),1);
         return $modified.' '.$sizetext[$i];
-    }
-    
-    protected function resizeName($name){
-        $ret = $name;
-        if(strlen($name)>15){
-            $ret = substr($name, 0, 5).'...'.substr($name, -9);
-        }
-        return $ret;
     }
 }
